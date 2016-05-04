@@ -1,0 +1,81 @@
+<navigation>
+</navigation>
+
+<div class="container">
+    <page-header content="vm.pageHeader"></page-header>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <a ng-show="vm.isLoggedIn" ng-click="vm.popupNewResidentForm()" class="btn btn-primary pull-right">New</a>
+
+<!-- commented out to focus on the resident section
+
+            <div class="btn-group pull-right" uib-dropdown ng-show="vm.isLoggedIn">
+              <button id="single-button" type="button" class="btn btn-success" uib-dropdown-toggle ng-disabled="disabled">
+                {{vm.selectedView }} <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                <li  ng-repeat="v in vm.views"><a ng-click="vm.selectView(v)">{{ v }}</a></li>
+              </ul>
+            </div>
+-->
+
+
+            <label for="filter">Filter Results</label>
+            <input id="filter" type="text" , name="filter" , ng-model="textFilter">
+            <div class="error">{{ vm.message }}</div>
+            <div class="col-xs-12 printable">
+
+
+              <div ng-switch on="vm.selectedView">
+
+                  <!-- Administrative View -->
+                  <div ng-switch-when="Administrative">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/administrative.view.html'"></div>
+                  </div>
+
+                  <div ng-switch-when="Allergy">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/allergy.view.html'"></div>
+                  </div>
+
+                  <div ng-switch-when="Bathing">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/bathing.view.html'"></div>
+                  </div>
+
+                  <div ng-switch-when="Continent">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/continent.view.html'"></div>
+                  </div>
+
+                  <div ng-switch-when="Mobility">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/mobility.view.html'"></div>
+                  </div>
+
+                  <div ng-switch-when="Nutrition">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/nutrition.view.html'"></div>
+                  </div>
+
+                  <div ng-switch-when="Pain">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/pain.view.html'"></div>
+                  </div>
+
+                  <div ng-switch-when="Physical Condition">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/physicalCondition.view.html'"></div>
+                  </div>
+
+                  <div ng-switch-when="Psychosocial">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/psychosocial.view.html'"></div>
+                  </div>
+
+                  <div ng-switch-when="Sleep">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/sleep.view.html'"></div>
+                  </div>
+
+                  <div ng-switch-when="Vitals">
+                       <div ng-include src="'/contentTypes/residents/residentHome/views/vitals.view.html'"></div>
+                  </div>
+              </div>
+
+            </div>
+        </div>
+    </div>
+    <footer-generic></footer-generic>
+</div>
