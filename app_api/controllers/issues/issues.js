@@ -30,13 +30,61 @@ module.exports.issuesCreate = function(req, res) {
     });
 };
 
+module.exports.issuesOpenCount = function(req, res) {
+
+  var username = req.params.username;
+
+  Iss.find({status: "Open", responsibleParty: username}, function(err, issues) {
+      console.log(issues.length);
+      sendJSONresponse(res, 200, issues.length)
+  });
+}
+
 /* GET list of issues */
 module.exports.issuesList = function(req, res) {
-    Iss.find({}, function(err, issues) {
+
+    console.log("list issue with STATUS: " + req.params.status);
+
+    var issueTemplate = {
+                 "title" : "$title",
+                 "responsibleParty" : "$responsibleParty",
+                 "resolutionTimeframe" : "$resolutionTimeframe",
+                 "description" : "$description",
+                 "submitBy" : "$submitBy",
+                 "submitDate": "$submitDate",
+                 "comments" : "$comments",
+                 "updateInfo" : "$updateInfo",
+                 "status"  : "$status",
+                 "idMembers": "$idMembers",
+                 "idLabels" : "$idLabels",
+                 "idAttachmentCover" : "$idAttachmentCover",
+                 "attachments" : "$attachments",
+                 "labels"    : "$labels",
+                 "checklists": "$checklists",
+                 "_id" : "$_id"
+               }
+
+    Iss.aggregate([{'$match' : {status : req.params.status}},
+      {'$group' : {"_id": "$responsibleParty",
+                  count: {"$sum" : 1},
+                  issues: {$push : issueTemplate}}},
+                  {'$sort' : {"count" : -1}}],
+     function(err, issues) {
         console.log(issues);
         sendJSONresponse(res, 200, issues)
     });
 };
+
+module.exports.issuesListByUsername = function(req, res) {
+
+  //var username = req.params.username;
+  var s = req.params.status;
+
+  Iss.find({status: s}, function(err, issues) {
+      console.log(issues);
+      sendJSONresponse(res, 200, issues)
+  });
+}
 
 module.exports.issuesReadOne = function(req, res) {
     console.log('Finding issue details', req.params);
@@ -94,11 +142,26 @@ module.exports.issuesUpdateOne = function(req, res) {
                     sendJSONresponse(res, 400, err);
                     return;
                 }
+
                 issue.title = req.body.title;
                 issue.responsibleParty = req.body.responsibleParty;
                 issue.resolutionTimeframe = req.body.resolutionTimeframe;
                 issue.submitBy = req.body.submitBy;
                 issue.description = req.body.description;
+                issue.status = req.body.status;
+
+                console.log(req.body);
+                if(req.body.deletedMember !== undefined) {
+                  issue.idMembers.splice(issue.idMembers.map
+                    (function(d){return d.name;}).indexOf(req.body.deletedMember), 1);
+                } else {
+                    issue.idMembers = req.body.idMembers;
+                }
+
+
+
+                console.log(issue.idMembers);
+
                 issue.updateInfo.push(updateInfo);
                 issue.save(function(err, issue) {
                     if (err) {

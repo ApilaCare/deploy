@@ -7,6 +7,10 @@ var sendJSONresponse = function(res, status, content) {
     res.json(content);
 };
 
+module.exports.testCall = function(req, res) {
+    sendJSONresponse(res, 200, {status:"cool"});
+}
+
 /* POST /api/appointments/new */
 module.exports.appointmentsCreate = function(req, res) {
 
@@ -14,9 +18,10 @@ module.exports.appointmentsCreate = function(req, res) {
     var d = new Date(req.body.date);
     var t = new Date(req.body.time);
 
+    console.log(d);
+
     d.setHours(t.getHours());
     d.setMinutes(t.getMinutes());
-    d.setSeconds(t.getSeconds());
 
     //create appointment from the inputed data
     Appoint.create({
@@ -40,16 +45,55 @@ module.exports.appointmentsCreate = function(req, res) {
 /* GET list of appointments */
 module.exports.appointmentsList = function(req, res) {
 
+    console.log(req);
+
     // change sensitivity to day rather than by minute
     var start = new Date();
     start.setHours(0, 0, 0, 0);
 
     Appoint.find({
-        time: {
+      /*  time: {
             $gte: start
-        }
+        }*/
     }).populate("residentGoing").exec(function(err, appointments) {
-        console.log(appointments);
+      //  console.log(appointments);
+        console.log("In appointment list");
+        sendJSONresponse(res, 200, appointments)
+    });
+};
+
+/* GET list by month of appointments */
+module.exports.appointmentsListByMonth = function(req, res) {
+
+
+    // change sensitivity to day rather than by minute
+    var start = new Date();
+    start.setHours(0, 0, 0, 0);
+
+    var months = {
+      "January" : 0,
+      "February": 1,
+      "March" : 2,
+      "April": 3,
+      "May" : 4,
+      "June": 5,
+      "July" : 6,
+      "August": 7,
+      "September" : 8,
+      "October": 9,
+      "November" : 10,
+      "December": 11
+    };
+
+    console.log(months[req.params.month]);
+
+    var query = 'return this.time.getMonth() === ' + months[req.params.month];
+
+    Appoint.find({
+        $where : query
+    }).populate("residentGoing").exec(function(err, appointments) {
+      //  console.log(appointments);
+        console.log("In appointment list");
         sendJSONresponse(res, 200, appointments)
     });
 };
@@ -86,6 +130,8 @@ module.exports.appointmentsReadOne = function(req, res) {
 /* PUT /api/appointments/:appointmentid */
 module.exports.appointmentsUpdateOne = function(req, res) {
 
+    console.log("In update appointment");
+
     if (!req.params.appointmentid) {
         sendJSONresponse(res, 404, {
             "message": "Not found, appointmentid is required"
@@ -95,6 +141,7 @@ module.exports.appointmentsUpdateOne = function(req, res) {
 
     Appoint
         .findById(req.params.appointmentid)
+        .populate("residentGoing")
         .exec(
             function(err, appointment) {
                 if (!appointment) {
@@ -120,21 +167,31 @@ module.exports.appointmentsUpdateOne = function(req, res) {
                     "updateDate": req.body.modifiedDate,
                     "updateField": req.body.updateField
                 };
-                console.log(updateInfo);
 
-                appointment.reason = req.body.reason,
-                    appointment.locationName = req.body.locationName,
-                    appointment.locationDoctor = req.body.locationDoctor,
-                    appointment.residentGoing = req.body.residentId,
-                    appointment.time = d,
-                    appointment.transportation = req.body.transportation,
-                    appointment.cancel = req.body.cancel,
+
+                appointment.reason = req.body.reason;
+                    appointment.locationName = req.body.locationName;
+                    appointment.locationDoctor = req.body.locationDoctor;
+                    appointment.time = d;
+                    appointment.transportation = req.body.transportation;
+                    appointment.cancel = req.body.cancel;
                     appointment.updateInfo.push(updateInfo);
+
+                    appointment.residentGoing = req.body.residentId;
+
                 appointment.save(function(err, appointment) {
                     if (err) {
                         sendJSONresponse(res, 404, err);
                     } else {
-                        sendJSONresponse(res, 200, appointment);
+
+                        Appoint.
+                        populate(appointment, "residentGoing",
+                        function(err) {
+                          //console.log(appointment);
+                          sendJSONresponse(res, 200, appointment);
+                        });
+
+
                     }
                 });
             }
