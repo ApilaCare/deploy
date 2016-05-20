@@ -12,6 +12,8 @@ var auth = jwt({
     userProperty: 'payload'
 });
 
+console.log("Secret: " + process.env.JWT_SECRET);
+
 // control variables
 // issues
 var ctrlIssues = require('../controllers/issues/issues');
