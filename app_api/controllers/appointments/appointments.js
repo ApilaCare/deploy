@@ -7,10 +7,6 @@ var sendJSONresponse = function(res, status, content) {
     res.json(content);
 };
 
-module.exports.testCall = function(req, res) {
-    sendJSONresponse(res, 200, {status:"cool"});
-}
-
 /* POST /api/appointments/new */
 module.exports.appointmentsCreate = function(req, res) {
 
@@ -18,10 +14,11 @@ module.exports.appointmentsCreate = function(req, res) {
     var d = new Date(req.body.date);
     var t = new Date(req.body.time);
 
-    console.log(d);
-
     d.setHours(t.getHours());
     d.setMinutes(t.getMinutes());
+
+    console.log("DATE:    ");
+    console.log(d);
 
     //create appointment from the inputed data
     Appoint.create({
