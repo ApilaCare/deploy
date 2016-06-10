@@ -21,6 +21,7 @@ module.exports.residentsCreate = function(req, res) {
         buildingStatus: req.body.buildingStatus,
         sex: req.body.sex,
         submitBy: req.payload.name,
+        community: req.body.community._id
     }, function(err, resident) {
         if (err) {
             console.log(err);
@@ -34,9 +35,20 @@ module.exports.residentsCreate = function(req, res) {
 
 // GET list of residents
 module.exports.residentsList = function(req, res) {
-    Resid.find({}, function(err, residents) {
+    Resid.find({"community" : req.params.communityid}, function(err, residents) {
         console.log(residents);
         sendJSONresponse(res, 200, residents);
+    });
+};
+
+
+module.exports.residentsCount = function(req, res) {
+
+  console.log("residentsCount: " + req.params.communityid);
+
+    Resid.find({"community" : req.params.communityid}, function(err, c) {
+        console.log(c.length);
+        sendJSONresponse(res, 200, c.length);
     });
 };
 
@@ -99,8 +111,10 @@ function addToArray(arr, value) {
 
     if (value != undefined) {
         if(value != "") {
-            console.log(value);
-            arr.push(value);
+            var info = {};
+            info.data = value;
+            info.date = new Date();
+            arr.push(info);
         }
 
     }
@@ -134,13 +148,13 @@ module.exports.residentsUpdateOne = function(req, res) {
         sendJSONresponse(res, 404, err);
     }
 
-    addToArray(req.body.respiration, req.body.newrespiration);
-    addToArray(req.body.vitalsPain, req.body.newvitalsPain);
-    addToArray(req.body.pulse, req.body.newpulse);
-    addToArray(req.body.oxygenSaturation, req.body.newoxygenSaturation);
-    addToArray(req.body.bloodPressureDiastolic, req.body.newbloodPressureDiastolic);
-    addToArray(req.body.bloodPressureSystolic, req.body.newbloodPressureSystolic);
-    addToArray(req.body.temperature, req.body.newtemperature);
+    addToArray(req.body.respiration, req.body.newrespiration.data);
+    addToArray(req.body.vitalsPain, req.body.newvitalsPain.data);
+    addToArray(req.body.pulse, req.body.newpulse.data);
+    addToArray(req.body.oxygenSaturation, req.body.newoxygenSaturation.data);
+    addToArray(req.body.bloodPressureDiastolic, req.body.newbloodPressureDiastolic.data);
+    addToArray(req.body.bloodPressureSystolic, req.body.newbloodPressureSystolic.data);
+    addToArray(req.body.temperature, req.body.newtemperature.data);
 
     addToArray(req.body.foodAllergies, req.body.newfoodAllergies);
     addToArray(req.body.medicationAllergies, req.body.newmedicationAllergies);

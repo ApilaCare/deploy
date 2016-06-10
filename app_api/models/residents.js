@@ -14,6 +14,10 @@ var residentSchema = new mongoose.Schema({
     updateInfo: [mongoose.Schema.Types.Mixed],
     submitDate: {type: Date, default: Date.now},
     submitBy: {type: String,required: true},
+    community: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Community'
+    },
 
     // bathing information
     typeOfBathing: {type: String}, // shower, tub, spit bath
@@ -118,13 +122,18 @@ var residentSchema = new mongoose.Schema({
     painDecreasedBy: {type: String},
 
     // vitals information
-    temperature: [Number],
-    bloodPressureSystolic: [Number],
-    bloodPressureDiastolic: [Number],
-    oxygenSaturation: [Number],
-    pulse: [Number],
-    vitalsPain: [Number],
-    respiration: [Number],
+    temperature: [vitalsInfoSchema],
+    bloodPressureSystolic: [vitalsInfoSchema],
+    bloodPressureDiastolic: [vitalsInfoSchema],
+    oxygenSaturation: [vitalsInfoSchema],
+    pulse: [vitalsInfoSchema],
+    vitalsPain: [vitalsInfoSchema],
+    respiration: [vitalsInfoSchema],
+});
+
+var vitalsInfoSchema = new mongoose.Schema({
+    data: {type: Number, required: true},
+    date: {type: Date, "default": Date.now},
 });
 
 mongoose.model('Resident', residentSchema);

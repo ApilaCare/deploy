@@ -38,13 +38,17 @@ var ctrlCommunities = require('../controllers/communities/communities');
 // communities
 router.post('/communities/new', ctrlCommunities.communitiesCreate);
 router.get('/communities/', auth, ctrlCommunities.communitiesList);
+router.put('/communities/accept/:communityid/', auth, ctrlCommunities.acceptMember);
+router.put('/communities/decline/:communityid/', auth, ctrlCommunities.declineMember);
+router.put('/communities/pending/:communityid/', auth, ctrlCommunities.addPendingMember);
 router.put('/communities/update/:communityid/', auth, ctrlCommunities.communitiesUpdateOne);
 router.delete('/communities/:communityid/', auth, ctrlCommunities.communitiesDeleteOne);
 
 // issues
-router.get('/issues/list/:status', auth, ctrlIssues.issuesList);
-router.get('/issues/:username/s/:status', auth, ctrlIssues.issuesListByUsername);
-router.get('/issues/count/:username', auth, ctrlIssues.issuesOpenCount);
+router.get('/issues/list/:status/id/:communityid', auth, ctrlIssues.issuesList);
+router.get('/issues/:username/s/:status/id/:communityid', auth, ctrlIssues.issuesListByUsername);
+router.get('/issues/count/:username/id/:communityid', auth, ctrlIssues.issuesOpenCount);
+router.get('/issues/issuescount/:communityid', auth, ctrlIssues.issuesCount);
 router.post('/issues/new', auth, ctrlIssues.issuesCreate);
 router.get('/issues/:issueid', auth, ctrlIssues.issuesReadOne);
 router.put('/issues/:issueid', auth, ctrlIssues.issuesUpdateOne);
@@ -77,8 +81,9 @@ router.put('/issues/:issueid/attachments/:attachmentid', auth, ctrlIssueAttachme
 router.delete('/issues/:issueid/attachments/:attachmentid', auth, ctrlIssueAttachments.issueAttachmentsDeleteOne);
 
 // appointments
-router.get('/appointments', auth, ctrlAppointments.appointmentsList);
-router.get('/appointments/:month', auth,  ctrlAppointments.appointmentsListByMonth);
+router.get('/appointments/:communityid', auth, ctrlAppointments.appointmentsList);
+//router.get('/appointments/:month', auth,  ctrlAppointments.appointmentsListByMonth);
+router.get('/appointments/today/:communityid', auth,  ctrlAppointments.appointmentsToday);
 router.get('/appointments/:appointmentid', auth, ctrlAppointments.appointmentsReadOne);
 router.put('/appointments/update/:appointmentid', auth, ctrlAppointments.appointmentsUpdateOne);
 router.delete('/appointments/:appointmentid', auth, ctrlAppointments.appointmentsDeleteOne);
@@ -92,12 +97,14 @@ router.delete('/appointments/:appointmentid/comments/:commentid', auth, ctrlAppo
 
 // users
 router.get('/users', auth, ctrlUsers.usersList);
+router.get('/users/community/:username', auth, ctrlUsers.userCommunity);
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
 // residents
-router.get('/residents', auth, ctrlResidents.residentsList);
+router.get('/residents/list/:communityid', auth, ctrlResidents.residentsList);
 router.get('/residents/:residentid', auth, ctrlResidents.residentById);
+router.get('/residents/count/:communityid', auth, ctrlResidents.residentsCount);
 router.put('/residents/update/:residentid', auth, ctrlResidents.residentsUpdateOne);
 router.delete('/residents/:residentid', auth, ctrlResidents.residentsDeleteOne);
 router.post('/residents/new', auth, ctrlResidents.residentsCreate);

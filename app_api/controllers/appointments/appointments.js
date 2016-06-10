@@ -29,6 +29,7 @@ module.exports.appointmentsCreate = function(req, res) {
         time: d,
         submitBy: req.payload.name,
         transportation: req.body.transportation,
+        community : req.body.community._id
     }, function(err, appointment) {
         if (err) {
             console.log(err);
@@ -49,9 +50,7 @@ module.exports.appointmentsList = function(req, res) {
     start.setHours(0, 0, 0, 0);
 
     Appoint.find({
-      /*  time: {
-            $gte: start
-        }*/
+      "community" : req.params.communityid
     }).populate("residentGoing").exec(function(err, appointments) {
       //  console.log(appointments);
         console.log("In appointment list");
@@ -62,6 +61,8 @@ module.exports.appointmentsList = function(req, res) {
 /* GET list by month of appointments */
 module.exports.appointmentsListByMonth = function(req, res) {
 
+
+    console.log("appoint by month");
 
     // change sensitivity to day rather than by minute
     var start = new Date();
@@ -90,8 +91,31 @@ module.exports.appointmentsListByMonth = function(req, res) {
         $where : query
     }).populate("residentGoing").exec(function(err, appointments) {
       //  console.log(appointments);
-        console.log("In appointment list");
+        console.log("In appointment list")
         sendJSONresponse(res, 200, appointments)
+    });
+};
+
+module.exports.appointmentsToday = function(req, res) {
+
+   var today = new Date();
+
+   console.log(req.params);
+
+   var query = 'return this.time.getDate() === ' + today.getDate();
+
+    Appoint.find({
+      "community" : req.params.communityid,
+      $where : query
+    }).exec(function(err, appointments) {
+
+        var num = 0;
+
+        if(appointments !== undefined) {
+          num = appointments.length;
+        }
+
+        sendJSONresponse(res, 200, num)
     });
 };
 
@@ -235,7 +259,7 @@ var getFullAppointment = function(req, res, appointId) {
                     sendJSONresponse(res, 404, err);
                     return;
                 }
-                console.log(appointment);
+              //  console.log(appointment);
                 sendJSONresponse(res, 200, appointment);
             });
 }

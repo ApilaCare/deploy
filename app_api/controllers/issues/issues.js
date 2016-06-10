@@ -27,6 +27,7 @@ module.exports.issuesCreate = function(req, res) {
         resolutionTimeframe: req.body.resolutionTimeframe,
         description: req.body.description,
         submitBy: req.payload.name,
+        community : req.body.community._id
     }, function(err, issue) {
         if (err) {
             console.log(err);
@@ -41,8 +42,28 @@ module.exports.issuesCreate = function(req, res) {
 module.exports.issuesOpenCount = function(req, res) {
 
   var username = req.params.username;
+  var community =  req.params.communityid;
 
-  Iss.find({status: "Open", responsibleParty: username}, function(err, issues) {
+  if(community == undefined){
+    sendJSONresponse(res, 404, 0);
+  }
+
+  Iss.find({status: "Open", responsibleParty: username, community: community}, function(err, issues) {
+      console.log(issues.length);
+      sendJSONresponse(res, 200, issues.length)
+  });
+}
+
+module.exports.issuesCount = function(req, res) {
+
+  console.log("issuesCount");
+  var c =  req.params.communityid;
+
+  if(c== undefined){
+    sendJSONresponse(res, 404, 0);
+  }
+
+  Iss.find({status: "Open", community: c}, function(err, issues) {
       console.log(issues.length);
       sendJSONresponse(res, 200, issues.length)
   });
@@ -51,7 +72,9 @@ module.exports.issuesOpenCount = function(req, res) {
 /* GET list of issues */
 module.exports.issuesList = function(req, res) {
 
-    console.log("list issue with STATUS: " + req.params.status);
+    console.log("list issue with ID: " + req.params.communityid);
+
+    var id = req.params.communityid;
 
     var issueTemplate = {
                  "title" : "$title",
@@ -69,10 +92,13 @@ module.exports.issuesList = function(req, res) {
                  "attachments" : "$attachments",
                  "labels"    : "$labels",
                  "checklists": "$checklists",
-                 "_id" : "$_id"
+                 "_id" : "$_id",
+                 "community" : "$community"
                }
 
-    Iss.aggregate([{'$match' : {status : req.params.status}},
+    Iss.aggregate([{'$match' : {community : new mongoose.Types.ObjectId(id),
+                                status : req.params.status}},
+
       {'$group' : {"_id": "$responsibleParty",
                   count: {"$sum" : 1},
                   issues: {$push : issueTemplate}}},
@@ -87,8 +113,9 @@ module.exports.issuesListByUsername = function(req, res) {
 
   //var username = req.params.username;
   var s = req.params.status;
+  var c =  req.params.communityid;
 
-  Iss.find({status: s}, function(err, issues) {
+  Iss.find({status: s, community: c}, function(err, issues) {
       console.log(issues);
       sendJSONresponse(res, 200, issues)
   });
