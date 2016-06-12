@@ -47,6 +47,16 @@ app.use(function (req, res, next) {
     next();
 });
 
+if(process.env.NODE_ENV === 'production') {
+  app.get('*', function(req, res, next) {
+    if(req.headers['x-forwarded-proto'] != 'https') {
+        res.redirect('https://apila.us' + req.url);
+      } else {
+        next();
+      }
+  });
+}
+
 app.use('/api', routesApi);
 app.use('/files', express.static(__dirname + 'upload_storage'));
 
