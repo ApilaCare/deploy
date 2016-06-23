@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
+/*
 if(process.env.NODE_ENV === 'production') {
   app.get('*', function(req, res, next) {
     if(req.headers['x-forwarded-proto'] != 'https') {
@@ -34,6 +35,7 @@ if(process.env.NODE_ENV === 'production') {
       }
   });
 }
+*/
 
 app.use('/api', routesApi);
 app.use('/files', express.static(__dirname + 'upload_storage'));
