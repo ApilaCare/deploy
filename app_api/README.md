@@ -1,3 +1,0 @@
-# api
-
-readme info
