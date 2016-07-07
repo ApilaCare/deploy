@@ -7,6 +7,7 @@ var sendJSONresponse = function(res, status, content) {
     res.json(content);
 };
 
+
 // api/issues/new
 module.exports.issuesCreate = function(req, res) {
 
@@ -93,7 +94,8 @@ module.exports.issuesList = function(req, res) {
                  "labels"    : "$labels",
                  "checklists": "$checklists",
                  "_id" : "$_id",
-                 "community" : "$community"
+                 "community" : "$community",
+                 "due" : "$due"
                }
 
     Iss.aggregate([{'$match' : {community : new mongoose.Types.ObjectId(id),
@@ -118,6 +120,19 @@ module.exports.issuesListByUsername = function(req, res) {
   Iss.find({status: s, community: c}, function(err, issues) {
       console.log(issues);
       sendJSONresponse(res, 200, issues)
+  });
+}
+
+module.exports.dueIssuesList = function(req, res) {
+  Iss.find({"due" : {$exists: true}, community: req.params.communityid},
+  function(err, issues) {
+    if(issues) {
+      sendJSONresponse(res, 200, issues);
+    } else {
+      sendJSONresponse(res, 404, {
+        "message": "Issues with due date not found"
+      });
+    }
   });
 }
 
@@ -184,6 +199,11 @@ module.exports.issuesUpdateOne = function(req, res) {
                 issue.submitBy = req.body.submitBy;
                 issue.description = req.body.description;
                 issue.status = req.body.status;
+                issue.due = req.body.due;
+
+                issue.checklists = req.body.checklists;
+                issue.labels = req.body.labels;
+                issue.updateInfo = req.body.updateInfo;
 
                 console.log(req.body);
                 if(req.body.deletedMember !== undefined) {
@@ -197,7 +217,13 @@ module.exports.issuesUpdateOne = function(req, res) {
 
                 console.log(issue.idMembers);
 
-                issue.updateInfo.push(updateInfo);
+                if(updateInfo.updateField !== undefined) {
+                  if(updateInfo.updateField.length > 0) {
+                    issue.updateInfo.push(updateInfo);
+                  }
+
+                }
+
                 issue.save(function(err, issue) {
                     if (err) {
                         sendJSONresponse(res, 404, err);

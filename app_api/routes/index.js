@@ -15,6 +15,7 @@ var auth = jwt({
 // control variables
 // issues
 var ctrlIssues = require('../controllers/issues/issues');
+var nodemailer = require('../services/email');
 var ctrlIssueComments = require('../controllers/issues/issueComments');
 var ctrlIssueChecklists = require('../controllers/issues/issueChecklists');
 var ctrlIssueLabels = require('../controllers/issues/issueLabels');
@@ -49,6 +50,7 @@ router.get('/issues/list/:status/id/:communityid', auth, ctrlIssues.issuesList);
 router.get('/issues/:username/s/:status/id/:communityid', auth, ctrlIssues.issuesListByUsername);
 router.get('/issues/count/:username/id/:communityid', auth, ctrlIssues.issuesOpenCount);
 router.get('/issues/issuescount/:communityid', auth, ctrlIssues.issuesCount);
+router.get('/issues/due/:communityid', auth, ctrlIssues.dueIssuesList);
 router.post('/issues/new', auth, ctrlIssues.issuesCreate);
 router.get('/issues/:issueid', auth, ctrlIssues.issuesReadOne);
 router.put('/issues/:issueid', auth, ctrlIssues.issuesUpdateOne);
@@ -97,7 +99,10 @@ router.delete('/appointments/:appointmentid/comments/:commentid', auth, ctrlAppo
 
 // users
 router.get('/users', auth, ctrlUsers.usersList);
+router.post('/users/forgotpassowrd/:email', ctrlUsers.forgotPassword);
+router.post('/users/reset/:token', ctrlUsers.resetPassword);
 router.get('/users/community/:username', auth, ctrlUsers.userCommunity);
+router.get('/users/list/:community', auth, ctrlUsers.usersInCommunity);
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
