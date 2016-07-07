@@ -8,9 +8,6 @@
     "password": process.env.EMAIL_PASSWORD
   };
 
-  var transporter = nodemailer
-                .createTransport("smtps://" + config.email + ":" + config.password + "@smtp.gmail.com");
-
 
   var mailOptions = {
     from: '',
@@ -19,6 +16,9 @@
     text: '',
     html: ''
 };
+
+var transporter = nodemailer
+                .createTransport("smtps://" + config.email + ":" + config.password + "@smtp.gmail.com");
 
   module.exports.sendMail = function(from, to, subject, text, callback) {
 

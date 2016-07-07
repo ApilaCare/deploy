@@ -17,10 +17,10 @@
     html: ''
 };
 
-  module.exports.sendMail = function(from, to, subject, text, callback) {
-
-    var transporter = nodemailer
+var transporter = nodemailer
                 .createTransport("smtps://" + config.email + ":" + config.password + "@smtp.gmail.com");
+
+  module.exports.sendMail = function(from, to, subject, text, callback) {
 
     mailOptions.from = from;
     mailOptions.to = to;
