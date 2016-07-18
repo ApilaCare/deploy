@@ -1,5 +1,5 @@
 {
-  "name": "apila deploy",
+  "name": "deploy",
   "version": "0.0.1",
   "description": "Apila's deployable repository that combines the frontend with the API",
   "license": "MIT",
