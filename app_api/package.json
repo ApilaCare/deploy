@@ -1,9 +1,13 @@
 {
-  "name": "apila",
+  "name": "deploy",
   "version": "0.0.1",
-  "description": "Apila's development of the API code",
+  "description": "Apila's deployable repository that combines the frontend with the API",
   "license": "MIT",
   "homepage": "http://apila.care",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ApilaCare/deploy.git"
+  },
   "private": true,
   "scripts": {
     "start": "node ./apila.js"
