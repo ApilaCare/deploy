@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Resid = mongoose.model('Resident');
 var User = mongoose.model('User');
+var moment = require('moment');
 
 var sendJSONresponse = function(res, status, content) {
     res.status(status);
@@ -21,7 +22,8 @@ module.exports.residentsCreate = function(req, res) {
         buildingStatus: req.body.buildingStatus,
         sex: req.body.sex,
         submitBy: req.payload.name,
-        community: req.body.community._id
+        community: req.body.community._id,
+        movedFrom: req.body.movedFrom
     }, function(err, resident) {
         if (err) {
             console.log(err);
@@ -40,6 +42,29 @@ module.exports.residentsList = function(req, res) {
         sendJSONresponse(res, 200, residents);
     });
 };
+
+module.exports.getAverageAge = function(req, res) {
+  Resid.find({"buildingStatus" : "In the Building",
+              "community" : req.params.communityid},
+  function(err, residents) {
+    if(residents) {
+      var averageAge = 0;
+
+      for(var i = 0; i < residents.length; ++i) {
+        var age = moment().diff(residents[i].birthDate, "years");
+        console.log("Age: " + age);
+        averageAge += age;
+      }
+
+      averageAge = averageAge / residents.length;
+
+      sendJSONresponse(res, 200, averageAge);
+    } else {
+      sendJSONresponse(res, 404, {message: "Residents not found"});
+    }
+
+  });
+}
 
 
 module.exports.residentsCount = function(req, res) {
@@ -101,6 +126,18 @@ module.exports.residentById = function(req, res) {
             });
 };
 
+module.exports.residentBirthday = function(req, res) {
+
+    Resid.find({"community" : req.params.communityid})
+    .exec(function(err, residents) {
+      if(res) {
+        sendJSONresponse(res, 200, residents);
+      } else {
+        sendJSONresponse(res, 404, null);
+      }
+
+    });
+}
 
 //small heplper functio to check if the fields is a number
 function isNumber(obj) {

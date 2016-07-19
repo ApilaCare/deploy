@@ -31,6 +31,39 @@ module.exports.communitiesCreate = function(req, res) {
     });
 };
 
+module.exports.addRole = function(req, res) {
+
+  Community.findOne({_id: req.params.communityid}, function(err, communites) {
+    if(communites) {
+
+      console.log(req.body.type);
+
+      if(req.body.type === "boss") {
+        communites.boss = req.params.userid;
+        console.log(communites.boss);
+      } else if(req.body.type === "directors") {
+        communites.directors.push(req.params.userid);
+        communites.minions.pull(req.params.userid);
+      } else if(req.body.type === "minions") {
+        communites.minions.push(req.params.userid);
+        communites.directors.pull(req.params.userid);
+      }
+
+      communites.save(function(err) {
+        if(err) {
+          sendJSONresponse(res, 404, {message: "Community not saved"});
+        } else {
+          sendJSONresponse(res, 200, null);
+        }
+      });
+
+
+    } else {
+      sendJSONresponse(res, 404, {message: "Community not found"})
+    }
+  });
+}
+
 module.exports.communitiesList = function(req, res) {
     Community.find({}, function(err, communities) {
         console.log(communities);
@@ -115,20 +148,27 @@ module.exports.acceptMember = function(req, res) {
             community.pendingMembers.splice(index, 1);
           }
 
+          community.minions.push(req.body.member);
+
+          console.log(req.body.member);
+
           //set the data in the user also
           User.findById(req.body.member, function(err, user) {
-            user.community = community._id;
 
-            user.save();
+              user.community = community._id;
+              user.save();
+
+              community.save(function(err, community) {
+                if(err) {
+                  sendJSONresponse(res, 404, err);
+                } else {
+                  sendJSONresponse(res, 200, community);
+                }
+              });
+
           });
 
-          community.save(function(err, community) {
-            if(err) {
-              sendJSONresponse(res, 404, err);
-            } else {
-              sendJSONresponse(res, 200, community);
-            }
-          });
+
 
           });
 
@@ -203,6 +243,29 @@ module.exports.communitiesReadOne = function(req, res) {
     }
 };
 
+module.exports.removeMember = function(req, res) {
+
+  console.log(req.params.communityid);
+
+  Community.findOne({"_id" : req.params.communityid}, function(err, community) {
+    if(community) {
+      community.communityMembers.pull(req.params.userid);
+      community.directors.pull(req.params.userid);
+      community.minions.pull(req.params.userid);
+
+      community.save(function(err) {
+        if(err) {
+          sendJSONresponse(res, 404, {message: "Error updating community"});
+        } else {
+          sendJSONresponse(res, 200, {message: "user removed"});
+        }
+      });
+    } else {
+      sendJSONresponse(res, 404, {message: "Error finding community"});
+    }
+  });
+}
+
 module.exports.communitiesDeleteOne = function(req, res) {
     var communityid = req.params.communityid;
     if (communityid) {
@@ -267,6 +330,8 @@ function addUserToCommunity(req, res, community) {
     u.community = community._id;
 
     community.communityMembers.push(u._id);
+    community.creator = u;
+    community.boss = u;
 
     console.log(u);
 

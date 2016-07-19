@@ -39,10 +39,12 @@ var ctrlCommunities = require('../controllers/communities/communities');
 // communities
 router.post('/communities/new', ctrlCommunities.communitiesCreate);
 router.get('/communities/', auth, ctrlCommunities.communitiesList);
+router.post('/communites/:communityid/role/:userid', auth, ctrlCommunities.addRole);
 router.put('/communities/accept/:communityid/', auth, ctrlCommunities.acceptMember);
 router.put('/communities/decline/:communityid/', auth, ctrlCommunities.declineMember);
 router.put('/communities/pending/:communityid/', auth, ctrlCommunities.addPendingMember);
 router.put('/communities/update/:communityid/', auth, ctrlCommunities.communitiesUpdateOne);
+router.delete('/communites/:communityid/user/:userid', auth, ctrlCommunities.removeMember);
 router.delete('/communities/:communityid/', auth, ctrlCommunities.communitiesDeleteOne);
 
 // issues
@@ -99,6 +101,9 @@ router.delete('/appointments/:appointmentid/comments/:commentid', auth, ctrlAppo
 
 // users
 router.get('/users', auth, ctrlUsers.usersList);
+router.put('/users/change/:username', auth, ctrlUsers.updateUsername);
+router.post('/users/:username/upload', auth, multipartyMiddleware, ctrlUsers.uploadImage);
+router.get('/users/:username/image', ctrlUsers.userImage);
 router.post('/users/forgotpassowrd/:email', ctrlUsers.forgotPassword);
 router.post('/users/reset/:token', ctrlUsers.resetPassword);
 router.get('/users/community/:username', auth, ctrlUsers.userCommunity);
@@ -108,10 +113,12 @@ router.post('/login', ctrlAuth.login);
 
 // residents
 router.get('/residents/list/:communityid', auth, ctrlResidents.residentsList);
+router.get('/residents/birthday/:communityid', auth, ctrlResidents.residentBirthday);
 router.get('/residents/:residentid', auth, ctrlResidents.residentById);
 router.get('/residents/count/:communityid', auth, ctrlResidents.residentsCount);
 router.put('/residents/update/:residentid', auth, ctrlResidents.residentsUpdateOne);
 router.delete('/residents/:residentid', auth, ctrlResidents.residentsDeleteOne);
 router.post('/residents/new', auth, ctrlResidents.residentsCreate);
+router.get('/residents/average_age/:communityid', auth, ctrlResidents.getAverageAge);
 
 module.exports = router;
