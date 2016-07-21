@@ -13,9 +13,12 @@ var auth = jwt({
 });
 
 // control variables
+
+var nodemailer = require('../services/email');
+
 // issues
 var ctrlIssues = require('../controllers/issues/issues');
-var nodemailer = require('../services/email');
+var ctrlIssueRecovery = require('../controllers/issues/issueRecovery');
 var ctrlIssueComments = require('../controllers/issues/issueComments');
 var ctrlIssueChecklists = require('../controllers/issues/issueChecklists');
 var ctrlIssueLabels = require('../controllers/issues/issueLabels');
@@ -44,7 +47,7 @@ router.put('/communities/accept/:communityid/', auth, ctrlCommunities.acceptMemb
 router.put('/communities/decline/:communityid/', auth, ctrlCommunities.declineMember);
 router.put('/communities/pending/:communityid/', auth, ctrlCommunities.addPendingMember);
 router.put('/communities/update/:communityid/', auth, ctrlCommunities.communitiesUpdateOne);
-router.delete('/communites/:communityid/user/:userid', auth, ctrlCommunities.removeMember);
+router.delete('/communites/:communityid/user/:userid/submitby/:username', auth, ctrlCommunities.removeMember);
 router.delete('/communities/:communityid/', auth, ctrlCommunities.communitiesDeleteOne);
 
 // issues
@@ -83,6 +86,10 @@ router.post('/issues/:issueid/attachments/new', auth, multipartyMiddleware, ctrl
 router.get('/issues/:issueid/attachments/:attachmentid', auth, ctrlIssueAttachments.issueAttachmentsReadOne);
 router.put('/issues/:issueid/attachments/:attachmentid', auth, ctrlIssueAttachments.issueAttachmentsUpdateOne);
 router.delete('/issues/:issueid/attachments/:attachmentid', auth, ctrlIssueAttachments.issueAttachmentsDeleteOne);
+
+// issues recovery
+router.post('/issues/recovery/:communityid', auth, ctrlIssueRecovery.createMemberRecovery);
+router.post('/issues/recovery/verify/:userid', auth, ctrlIssueRecovery.confirmPassword);
 
 // appointments
 router.get('/appointments/:communityid', auth, ctrlAppointments.appointmentsList);

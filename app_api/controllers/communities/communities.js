@@ -253,15 +253,51 @@ module.exports.removeMember = function(req, res) {
       community.directors.pull(req.params.userid);
       community.minions.pull(req.params.userid);
 
-      community.save(function(err) {
-        if(err) {
-          sendJSONresponse(res, 404, {message: "Error updating community"});
-        } else {
-          sendJSONresponse(res, 200, {message: "user removed"});
-        }
+      console.log(req.params.username);
+
+      //if the user we are removing is the creator, set the one who removed him the creator
+      if(req.params.userid === community.creator) {
+        User.findOne({name: req.params.username}, function(err, user) {
+          if(user) {
+            community.creator = user._id;
+          } else {
+            sendJSONresponse(res, 404, {message: "Error finding user"});
+          }
+        });
+      }
+
+      removeCommunityFromUser(res, req.params.userid, function() {
+        community.save(function(err) {
+          if(err) {
+            sendJSONresponse(res, 404, {message: "Error updating community"});
+          } else {
+            sendJSONresponse(res, 200, {message: "user removed"});
+          }
+        });
       });
+
+
     } else {
       sendJSONresponse(res, 404, {message: "Error finding community"});
+    }
+  });
+}
+
+function removeCommunityFromUser(res, userid, callback) {
+  User.findById(userid)
+  .exec(function(err, user) {
+    if(user) {
+      user.community = null;
+
+      user.save(function(err) {
+        if(err) {
+          sendJSONresponse(res, 500, {message: "Error while saving the user"});
+        } else {
+          callback();
+        }
+      })
+    } else {
+      sendJSONresponse(res, 404, {message: "User not found"});
     }
   });
 }
