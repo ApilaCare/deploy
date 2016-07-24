@@ -2,7 +2,12 @@ var mongoose = require('mongoose');
 
 var IssRecovery = mongoose.model('MemberRecover');
 var User = mongoose.model('User');
+var emailService = require('../../services/email');
+var Iss = mongoose.model('Issue');
 var Community = mongoose.model('Community');
+var pdf = require('pdfkit');
+var fs = require('fs');
+
 var _ = require('lodash');
 
 var sendJSONresponse = function(res, status, content) {
@@ -105,21 +110,36 @@ module.exports.confirmPassword = function(req, res) {
     if(user) {
       if(user.validPassword(password)) {
 
-        IssRecovery.findOne({"_id" : req.body.recoveryid}, function(err, recovery) {
-          if(recovery) {
-            if(req.body.type === "boss") {
-              recovery.bossPasswordConfirmed = true;
+        if(req.body.type === "boss") {
+          IssRecovery.findOne({"_id" : req.body.recoveryid}, function(err, recovery) {
+            if(recovery) {
 
-              recovery.save(function() {
-                sendJSONresponse(res, 200, {"message" : true});
-              });
+                recovery.bossPasswordConfirmed = true;
+                recovery.save(function() {
+                  sendJSONresponse(res, 200, {"message" : true});
+                });
+
+
             } else {
-
+              sendJSONresponse(res, 404, {"message" : false});
             }
-          } else {
-            sendJSONresponse(res, 404, {"message" : false});
-          }
-        });
+          });
+        } else {
+
+          findRecoveryByUser(res, req.params.userid, function(recovery) {
+            recovery.chosenMemberPasswordConfirmed = true;
+            recovery.save(function() {
+
+              // both of the users have verified password
+              if(recovery.bossPasswordConfirmed === true) {
+                unlockCondifentialIssues(recovery);
+              }
+
+
+              sendJSONresponse(res, 200, {"message" : true});
+            });
+          });
+        }
 
 
       } else {
@@ -132,9 +152,73 @@ module.exports.confirmPassword = function(req, res) {
 
 }
 
-//transfer confidential issues from 1 user to another, when the user is recovered
-function switchOverIssues() {
+function findRecoveryByUser(res, userid, callback) {
+  IssRecovery.findOne({"chosenMember" : userid})
+   .populate("recoveredMember")
+   .exec(function(err, recovery) {
+    if(recovery) {
+      callback(recovery);
+    } else {
+      sendJSONresponse(res, 404, {message: "Recovery not found"});
+    }
+  });
+}
 
+function createPdf(issues) {
+  var doc = new pdf;
+
+  doc.pipe(fs.createWriteStream('confidential.pdf'));
+
+
+  doc.text("Confidential issues", 50, 50);
+
+ for(var i = 0; i < issues.length; ++i) {
+   doc.text(issues[i].title, 50, 80 + (i*15));
+ }
+
+  doc.end();
+
+  return doc;
+}
+
+// getting confidentials issues from the recovoredUser and convert it to pdf and send with email to boss
+function unlockCondifentialIssues(recovery) {
+  console.log("In unlocking process");
+
+  //getting issues
+  getConfidentialIssues(recovery.recoveredMember, function(issues) {
+
+    var attachement = createPdf(issues);
+
+    /*
+    emailService.sendConfidentialIssues("support@apila.care", recovery.recoveredMember.email,
+    recovery.recoveredMember.name, issues, function(err, info) {
+
+      if(err) {
+        console.log("Unable to send confidential issue recovery email");
+      }
+
+      console.log("email sent");
+
+    });
+    */
+
+  });
+}
+
+function getConfidentialIssues(recoveredMember, callback) {
+
+ console.log(recoveredMember.name);
+
+  Iss.find({"confidential" : true, "submitBy" : recoveredMember.name},
+      function(err, issues) {
+        if(issues) {
+          callback(issues);
+        } else {
+          console.log("Error while finding issues");
+        }
+
+      });
 }
 
 // given a user id and the chosenUser, it set's the user with a reference to it's chosenUser
