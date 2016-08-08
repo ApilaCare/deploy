@@ -1,3 +1,4 @@
+cd
 // require('dotenv').load();
 var debug = require('debug')('Express4');
 var express = require('express');
@@ -29,7 +30,7 @@ app.use(cookieParser());
 if(process.env.NODE_ENV === 'production') {
   app.get('*', function(req, res, next) {
     if(req.headers['x-forwarded-proto'] != 'https') {
-        res.redirect('https://apila.us' + req.url);
+        res.redirect('https://apila.care' + req.url);
       } else {
         next();
       }
