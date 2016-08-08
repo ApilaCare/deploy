@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Community = mongoose.model('Community');
 var User = mongoose.model('User');
 
+var async = require('async');
+
 var sendJSONresponse = function(res, status, content) {
     res.status(status);
     res.json(content);
@@ -40,7 +42,8 @@ module.exports.addRole = function(req, res) {
 
       if(req.body.type === "boss") {
         communites.boss = req.params.userid;
-        console.log(communites.boss);
+        communites.minions.pull(req.params.userid);
+        communites.directors.pull(req.params.userid);
       } else if(req.body.type === "directors") {
         communites.directors.push(req.params.userid);
         communites.minions.pull(req.params.userid);
@@ -65,7 +68,7 @@ module.exports.addRole = function(req, res) {
 }
 
 module.exports.communitiesList = function(req, res) {
-    Community.find({}, function(err, communities) {
+    Community.find({"testCommunity" : false}, function(err, communities) {
         console.log(communities);
         sendJSONresponse(res, 200, communities);
     });
@@ -155,6 +158,8 @@ module.exports.acceptMember = function(req, res) {
           //set the data in the user also
           User.findById(req.body.member, function(err, user) {
 
+              // set the old community as a previous community before we change it
+              user.prevCommunity = user.community;
               user.community = community._id;
               user.save();
 
@@ -271,7 +276,7 @@ module.exports.removeMember = function(req, res) {
           if(err) {
             sendJSONresponse(res, 404, {message: "Error updating community"});
           } else {
-            sendJSONresponse(res, 200, {message: "user removed"});
+            sendJSONresponse(res, 200, {message: "User removed"});
           }
         });
       });
@@ -279,6 +284,19 @@ module.exports.removeMember = function(req, res) {
 
     } else {
       sendJSONresponse(res, 404, {message: "Error finding community"});
+    }
+  });
+}
+
+// we are counting that their will be only one community to restore
+module.exports.hasCanceledCommunity = function(req, res) {
+  Community.findOne({"testCommunity" : false, "creator" : req.params.userid})
+  .exec(function(err, community) {
+    if(community) {
+      console.log(community);
+      sendJSONresponse(res, 200, community);
+    } else {
+      sendJSONresponse(res, 404, {message: "Error while finding user"});
     }
   });
 }
@@ -356,6 +374,78 @@ var getAuthor = function(req, res, callback) {
     }
 };
 
+
+module.exports.restoreCommunity = function(req, res) {
+
+ var communityid = req.params.communityid;
+
+  User.find({"prevCommunity" : communityid})
+  .exec(function(err, users) {
+    if(users) {
+
+      console.log(users);
+      async.each(users, function(user, cont) {
+        user.community = user.prevCommunity;
+        user.prevCommunity = communityid;
+
+        user.save(function(err) {
+          if(err) {
+            cont(false);
+          } else {
+            cont();
+
+          }
+        });
+      }, function(err) {
+        sendJSONresponse(res, 200, {"status" : true});
+      });
+    } else {
+      sendJSONresponse(res, 404, {message: "Error while finding users in community"});
+    }
+  });
+}
+
+module.exports.doCreateCommunity = function(communityInfo, callback) {
+
+  var members = [];
+  members.push(communityInfo.creator);
+
+  Community.create({
+      name : communityInfo.name,
+      communityMembers : members,
+      pendingMembers : [],
+      creator : communityInfo.creator,
+      boss : communityInfo.creator,
+      testCommunity : true
+
+  }, function(err, community) {
+
+      if (err) {
+          console.log(err);
+          callback(false);
+      } else {
+
+        User.findById(communityInfo.creator)
+        .exec(function(err, user) {
+          if(user) {
+            user.community = community._id;
+
+            user.save(function(err) {
+              if(err) {
+                callback(false);
+              } else {
+                callback(true);
+              }
+            })
+          } else {
+            callback(false);
+          }
+        });
+
+      }
+  });
+}
+
 function addUserToCommunity(req, res, community) {
   var username = req.body.username;
 
@@ -363,6 +453,7 @@ function addUserToCommunity(req, res, community) {
   User
   .findOne({"name":username})
   .exec(function(err, u) {
+    u.prevCommunity = u.community;
     u.community = community._id;
 
     community.communityMembers.push(u._id);

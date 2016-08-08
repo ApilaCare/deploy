@@ -15,12 +15,15 @@ var userSchema = new mongoose.Schema({
     },
     userImage: {type: String},
     community: {type: mongoose.Schema.Types.ObjectId, ref: 'Community'}, // _id of community that user is part of
+    prevCommunity: {type: mongoose.Schema.Types.ObjectId, ref: 'Community'}, // we need to store previous community when switching between test -> real community
     recovery: {type: String},
     registeredOn: {type: Date, default: Date.now},
     hash: String,
     salt: String,
     resetPasswordToken: String,
-    resetPasswordExpires: Date
+    resetPasswordExpires: Date,
+    stripeCustomer: {type: String},
+    stripeSubscription: {type: String}
 });
 
 userSchema.methods.setPassword = function(password) {

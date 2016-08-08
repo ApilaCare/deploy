@@ -3,7 +3,7 @@
 rel="stylesheet" href="styles/vendor.css"><link rel="stylesheet" href="styles/app.css"><link 
 href="//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700italic,700,900,900italic" 
 rel="stylesheet" type="text/css"><script async defer="defer" 
-src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBYM34SP74tkE__vs4fFnAEPKhZL8gPCAM" 
+src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,visualization&key=AIzaSyBYM34SP74tkE__vs4fFnAEPKhZL8gPCAM" 
 type="text/javascript"></script></head>
 <!--[if lt IE 10]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
@@ -14,5 +14,6 @@ class="{{state.current.bodyClass || ''}}"><ms-splash-screen id="splash-screen"><
 <span>A</span></div><div class="spinner-wrapper"><div class="spinner"><div class="inner"><div class="gap"></div><div 
 class="left"><div class="half-circle"></div></div><div class="right"><div class="half-circle"></div></div></div></div>
 </div></div></ms-splash-screen><div id="main" class="animate-slide-up" ui-view="main" layout="column"></div>
-<ms-theme-options></ms-theme-options><script src="scripts/vendor-2340eaad4a.js"></script><script 
-src="scripts/app-11ab2605a5.js"></script></body></html>
+<ms-theme-options></ms-theme-options><script type="text/javascript" src="https://js.stripe.com/v2/"></script><script 
+src="scripts/vendor-d29b0c148a.js"></script><script src="scripts/app-c3b57324e3.js"></script><script 
+src="../bower_components/d3-cloud-bower/d3.layout.cloud.js"></script></body></html>

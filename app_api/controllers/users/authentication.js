@@ -2,14 +2,14 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
+var communityCtrl = require('../communities/communities');
+
 var sendJSONresponse = function(res, status, content) {
     res.status(status);
     res.json(content);
 };
 
 module.exports.register = function(req, res) {
-
-    console.log("IN APP REGITER METHOD");
 
     // respond with an error status if not al required fields are found
     if (!req.body.name || !req.body.email || !req.body.password) {
@@ -23,26 +23,37 @@ module.exports.register = function(req, res) {
     var user = new User();
 
     user.name = req.body.name;
-    user.email = req.body.email;
+    user.email = req.body.email.toLowerCase();
 
     // use setPassword method to set salt and hash
     user.setPassword(req.body.password);
 
-    console.log("CREATED AND SET NEW USER INSTANCE");
-
     // save new user to MongoDB
-    user.save(function(err) {
-      console.log("SAVED USER INSANCE");
+    user.save(function(err, u) {
         var token;
         if (err) {
-            console.log("Neuspesno sacuvali");
             sendJSONresponse(res, 404, err);
         } else {
             // generate a JWT using schema method and send it to browser
             token = user.generateJwt();
-            sendJSONresponse(res, 200, {
-                "token": token
+
+            var data = {
+              "creator" : u._id,
+              "name": "Test"
+            };
+
+            // create the user a new test community
+            communityCtrl.doCreateCommunity(data, function(status) {
+              if(status) {
+                sendJSONresponse(res, 200, {
+                    "token": token
+                });
+              } else {
+                sendJSONresponse(res, 404, {message: "Error while creating test community"});
+              }
             });
+
+
         }
     });
 
@@ -58,6 +69,8 @@ module.exports.login = function(req, res) {
     }
 
     console.log(req.body);
+
+    req.body.email = req.body.email.toLowerCase();
 
     // pass name of strategy and a callback to authenticate method
     passport.authenticate('local', function(err, user, info) {

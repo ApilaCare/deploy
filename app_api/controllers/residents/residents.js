@@ -44,7 +44,7 @@ module.exports.residentsList = function(req, res) {
 };
 
 module.exports.getAverageAge = function(req, res) {
-  Resid.find({"buildingStatus" : "In the Building",
+  Resid.find({"buildingStatus" : "In Building",
               "community" : req.params.communityid},
   function(err, residents) {
     if(residents) {
@@ -52,13 +52,33 @@ module.exports.getAverageAge = function(req, res) {
 
       for(var i = 0; i < residents.length; ++i) {
         var age = moment().diff(residents[i].birthDate, "years");
-        console.log("Age: " + age);
         averageAge += age;
       }
 
       averageAge = averageAge / residents.length;
 
       sendJSONresponse(res, 200, averageAge);
+    } else {
+      sendJSONresponse(res, 404, {message: "Residents not found"});
+    }
+  });
+}
+
+module.exports.averageStayTime = function(req, res) {
+  Resid.find({"buildingStatus" : "In Building",
+              "community" : req.params.communityid},
+  function(err, residents) {
+    if(residents) {
+      var averageStay = 0;
+
+      for(var i = 0; i < residents.length; ++i) {
+        var stay = moment().diff(residents[i].admissionDate, "days");
+        averageStay += stay;
+      }
+
+      averageStay = averageStay / residents.length;
+
+      sendJSONresponse(res, 200, averageStay);
     } else {
       sendJSONresponse(res, 404, {message: "Residents not found"});
     }
