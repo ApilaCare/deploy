@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var utils = require('../../services/utils');
 
 var User = mongoose.model('User');
 var Community = mongoose.model('Community');
@@ -10,10 +11,89 @@ var crypto = require('crypto');
 var fs = require('fs');
 var imageUploadService = require('../../services/imageUpload');
 
-var sendJSONresponse = function(res, status, content) {
-    res.status(status);
-    res.json(content);
-};
+
+// GET /users - Returns list of user names in the app
+module.exports.usersList = function(req, res) {
+  User.find({}, 'name',  function(err, users) {
+      if(err) {
+        utils.sendJSONresponse(res, 404, {"message" : "Error while getting user list"});
+      } else {
+        utils.sendJSONresponse(res, 200, users);
+      }
+  });
+}
+
+// GET /users/getuser/:username - Get user info by username
+module.exports.getUser = function(req, res) {
+
+  if(!req.params.username) {
+    utils.sendJSONresponse(res, 404, {"message" : "Username is not set"});
+    return;
+  }
+
+  User.findOne({"name" : req.params.username})
+      .populate("", "-salt -hash")
+      .exec(function(err, user) {
+        if(user) {
+          utils.sendJSONresponse(res, 200, user);
+        } else {
+          utils.sendJSONresponse(res, 404, {message: "User not found!"});
+        }
+  });
+}
+
+// GET /users/list/:community - List all users from a community
+module.exports.usersInCommunity = function(req, res) {
+
+  User.find({community: req.params.community})
+      .populate("recovery", "-salt -hash")
+      .exec( function(err, users) {
+        if(err) {
+          utils.sendJSONresponse(res, 404, {"message" : "Error finding users in community"});
+        } else {
+          utils.sendJSONresponse(res, 200, users);
+        }
+  });
+
+}
+
+// GET /users/community/:username - Gets community info for a username
+module.exports.userCommunity = function(req, res) {
+
+  var username = req.params.username;
+
+  User.findOne({"name" : username})
+      .exec(function(err, user) {
+        if(err) {
+          sendJSONresponse(res, 404, {"message" : "Error while finding user"});
+        } else {
+
+          if(user.community) {
+            Community.findById(user.community)
+            .populate("communityMembers pendingMembers directors minions creator boss communityMembers.recovery", "-salt -hash")
+            .exec( function(err, community) {
+              if(err) {
+                utils.sendJSONresponse(res, 400, {"message" : "Error while finding community"});
+              } else {
+                utils.sendJSONresponse(res, 200, community);
+              }
+            });
+          }
+        }
+  });
+}
+
+// GET /users/:username/image - Gets users image url
+module.exports.userImage = function(req, res) {
+
+  User.findOne({name: req.params.username}, function(err, user) {
+    if(user) {
+      utils.sendJSONresponse(res, 200, user.userImage);
+    } else {
+      utils.sendJSONresponse(res, 404, null);
+    }
+  });
+}
 
 module.exports.forgotPassword = function(req, res) {
 
@@ -30,7 +110,7 @@ module.exports.forgotPassword = function(req, res) {
               doSendPasswordForget(req, res, token);
             });
           } else {
-            sendJSONresponse(res, 404, null);
+            utils.sendJSONresponse(res, 404, null);
           }
 
 
@@ -42,8 +122,6 @@ module.exports.forgotPassword = function(req, res) {
 
 module.exports.resetPassword = function(req, res) {
 
-  console.log(req.params.token);
-
   User.findOne({"resetPasswordToken": req.params.token, "resetPasswordExpires": {$gt: Date.now()}},
        function(err, user) {
 
@@ -53,48 +131,13 @@ module.exports.resetPassword = function(req, res) {
            user.resetPasswordExpires = undefined;
 
            user.save(function(err) {
-             sendJSONresponse(res, 200, null);
+             utils.sendJSONresponse(res, 200, null);
            });
          } else {
-           sendJSONresponse(res, 403, null);
+           utils.sendJSONresponse(res, 403, null);
          }
 
   });
-}
-
-function doSendPasswordForget(req, res, token) {
-  emailService.sendForgotPassword("supprot@apila.com", req.params.email, token, req.headers.host,
-  function(error, info) {
-    if(error){
-        sendJSONresponse(res, 404, null);
-    }
-    console.log('Message sent: ' + info.response);
-    sendJSONresponse(res, 200, null);
-  });
-}
-
-module.exports.usersList = function(req, res) {
-  console.log("In usersList");
-
-  User.find({}, 'name',  function(err, users) {
-      console.log(users);
-      sendJSONresponse(res, 200, users);
-  });
-
-}
-
-module.exports.usersInCommunity = function(req, res) {
-
-  console.log(req.params.community);
-  console.log("IN Community");
-
-  User.find({community: req.params.community})
-      .populate("recovery", "-salt -hash")
-      .exec( function(err, users) {
-          console.log(users);
-          sendJSONresponse(res, 200, users);
-      });
-
 }
 
 module.exports.uploadImage = function(req, res) {
@@ -120,28 +163,17 @@ module.exports.uploadImage = function(req, res) {
           user.userImage = fullUrl;
           user.save(function(err) {
             if(err) {
-              sendJSONresponse(res, 404, {message: "Unable to save user"});
+              utils.sendJSONresponse(res, 404, {message: "Unable to save user"});
             } else {
-              sendJSONresponse(res, 200, fullUrl);
+              utils.sendJSONresponse(res, 200, fullUrl);
             }
           });
         } else {
-          sendJSONresponse(res, 404, {message: "Unable to find user"});
+          utils.sendJSONresponse(res, 404, {message: "Unable to find user"});
         }
       });
 
 
-  });
-}
-
-module.exports.userImage = function(req, res) {
-
-  User.findOne({name: req.params.username}, function(err, user) {
-    if(user) {
-      sendJSONresponse(res, 200, user.userImage);
-    } else {
-      sendJSONresponse(res, 404, null);
-    }
   });
 }
 
@@ -153,53 +185,28 @@ module.exports.updateUsername = function(req, res) {
 
       user.save(function(err, u) {
         if(err) {
-          sendJSONresponse(res, 200, u);
+          utils.sendJSONresponse(res, 200, u);
         } else {
-          sendJSONresponse(res, 404, null);
-          console.log(err);
+          utils.sendJSONresponse(res, 404, null);
+
         }
       })
     } else {
-      sendJSONresponse(res, 404, null);
+      utils.sendJSONresponse(res, 404, null);
     }
   });
 }
 
-module.exports.getUser = function(req, res) {
-  User.findOne({"name" : req.params.username})
-      .populate("", "-salt -hash")
-      .exec(function(err, user) {
-        if(user) {
-          sendJSONresponse(res, 200, user);
-        } else {
-          sendJSONresponse(res, 404, {message: "user not found!"});
-        }
-      });
-}
 
-module.exports.userCommunity = function(req, res) {
+// HELPER FUNCTIONS
 
-  var username = req.params.username;
-
-  console.log("userCommunity " + username);
-
-  User.findOne({"name" : username})
-      .exec(function(err, user) {
-
-        if(user.community)
-        {
-          Community.findById(user.community)
-          .populate("communityMembers pendingMembers directors minions creator boss communityMembers.recovery", "-salt -hash")
-          .exec( function(err, community) {
-            if(err) {
-              sendJSONresponse(res, 400, {});
-            } else {
-              console.log(user);
-              sendJSONresponse(res, 200, community);
-            }
-          });
-        }
-
-
-      });
+function doSendPasswordForget(req, res, token) {
+  emailService.sendForgotPassword("supprot@apila.com", req.params.email, token, req.headers.host,
+  function(error, info) {
+    if(error){
+        utils.sendJSONresponse(res, 404, null);
     }
+
+    utils.sendJSONresponse(res, 200, null);
+  });
+}

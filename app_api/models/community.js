@@ -7,8 +7,10 @@ var communitySchema = new mongoose.Schema({
     creator: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     boss: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     directors: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-    minions: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
-    /* not used yet fields
+    minions: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+    testCommunity: {type: Boolean, default: false},
+    /*canceled: {type: Boolean, default: false}
+     not used yet fields
 
     phoneNumber: {type: Number},
     address: {type: String},

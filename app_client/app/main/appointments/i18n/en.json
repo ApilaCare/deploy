@@ -13,6 +13,7 @@
         "CLOSE_DIALOG": "Close dialog",
         "REASON": "Reason",
         "ALL_DAY": "All day",
+        "EXPORT": "Export",
         "START_DATE": "Start Date",
         "START_TIME": "Start Time",
         "END_DATE": "End Date",

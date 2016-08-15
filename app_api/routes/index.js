@@ -30,6 +30,7 @@ var ctrlResidents = require('../controllers/residents/residents');
 // users
 var ctrlUsers = require('../controllers/users/users');
 var ctrlAuth = require('../controllers/users/authentication');
+var ctrlPayment = require('../controllers/users/payment');
 
 // appointments
 var ctrlAppointments = require('../controllers/appointments/appointments');
@@ -40,9 +41,11 @@ var ctrlCommunities = require('../controllers/communities/communities');
 
 
 // communities
-router.post('/communities/new', ctrlCommunities.communitiesCreate);
 router.get('/communities/', auth, ctrlCommunities.communitiesList);
+router.get('/communites/canceled/:userid', auth, ctrlCommunities.hasCanceledCommunity);
+router.post('/communities/new', ctrlCommunities.communitiesCreate);
 router.post('/communites/:communityid/role/:userid', auth, ctrlCommunities.addRole);
+router.post('/communites/:communityid/restore/:userid', auth, ctrlCommunities.restoreCommunity);
 router.put('/communities/accept/:communityid/', auth, ctrlCommunities.acceptMember);
 router.put('/communities/decline/:communityid/', auth, ctrlCommunities.declineMember);
 router.put('/communities/pending/:communityid/', auth, ctrlCommunities.addPendingMember);
@@ -108,15 +111,22 @@ router.delete('/appointments/:appointmentid/comments/:commentid', auth, ctrlAppo
 
 // users
 router.get('/users', auth, ctrlUsers.usersList);
-router.put('/users/change/:username', auth, ctrlUsers.updateUsername);
-router.post('/users/:username/upload', auth, multipartyMiddleware, ctrlUsers.uploadImage);
+router.get('/users/getuser/:username', auth, ctrlUsers.getUser);
+router.get('/users/list/:community', auth, ctrlUsers.usersInCommunity);
+router.get('/users/community/:username', auth, ctrlUsers.userCommunity);
 router.get('/users/:username/image', ctrlUsers.userImage);
+router.post('/users/:username/upload', auth, multipartyMiddleware, ctrlUsers.uploadImage);
 router.post('/users/forgotpassowrd/:email', ctrlUsers.forgotPassword);
 router.post('/users/reset/:token', ctrlUsers.resetPassword);
-router.get('/users/community/:username', auth, ctrlUsers.userCommunity);
-router.get('/users/list/:community', auth, ctrlUsers.usersInCommunity);
-router.get('/users/getuser/:username', auth, ctrlUsers.getUser);
+router.put('/users/change/:username', auth, ctrlUsers.updateUsername);
 
+//users payment
+router.post('/users/:userid/savecard', auth, ctrlPayment.saveCreditCard);
+router.get('/users/:userid/customer', auth, ctrlPayment.getCustomer);
+router.delete('/users/:userid/subscription', auth, ctrlPayment.cancelSubscription);
+router.put('/users/:userid/update', auth, ctrlPayment.updateCustomer);
+
+//users authentication
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
@@ -126,9 +136,11 @@ router.get('/residents/list/:communityid', auth, ctrlResidents.residentsList);
 router.get('/residents/birthday/:communityid', auth, ctrlResidents.residentBirthday);
 router.get('/residents/:residentid', auth, ctrlResidents.residentById);
 router.get('/residents/count/:communityid', auth, ctrlResidents.residentsCount);
+router.get('/residents/:communityid/locations', auth, ctrlResidents.getLocations);
+router.get('/residents/average_age/:communityid', auth, ctrlResidents.getAverageAge);
+router.get('/residents/average_stay/:communityid', auth, ctrlResidents.averageStayTime);
+router.post('/residents/new', auth, ctrlResidents.residentsCreate);
 router.put('/residents/update/:residentid', auth, ctrlResidents.residentsUpdateOne);
 router.delete('/residents/:residentid', auth, ctrlResidents.residentsDeleteOne);
-router.post('/residents/new', auth, ctrlResidents.residentsCreate);
-router.get('/residents/average_age/:communityid', auth, ctrlResidents.getAverageAge);
 
 module.exports = router;
