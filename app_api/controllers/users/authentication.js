@@ -3,17 +3,14 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 var communityCtrl = require('../communities/communities');
+var utils = require('../../services/utils');
 
-var sendJSONresponse = function(res, status, content) {
-    res.status(status);
-    res.json(content);
-};
-
+// POST /register - User registration
 module.exports.register = function(req, res) {
 
     // respond with an error status if not al required fields are found
     if (!req.body.name || !req.body.email || !req.body.password) {
-        sendJSONresponse(res, 400, {
+        utils.sendJSONresponse(res, 400, {
             "message": "All fields required"
         });
         return;
@@ -32,7 +29,7 @@ module.exports.register = function(req, res) {
     user.save(function(err, u) {
         var token;
         if (err) {
-            sendJSONresponse(res, 404, err);
+            utils.sendJSONresponse(res, 404, err);
         } else {
             // generate a JWT using schema method and send it to browser
             token = user.generateJwt();
@@ -43,13 +40,15 @@ module.exports.register = function(req, res) {
             };
 
             // create the user a new test community
-            communityCtrl.doCreateCommunity(data, function(status) {
+            communityCtrl.doCreateCommunity(data, function(status, community) {
               if(status) {
-                sendJSONresponse(res, 200, {
-                    "token": token
+                utils.sendJSONresponse(res, 200, {
+                    'token': token,
+                    'community' : community,
+                    'id' : user._id
                 });
               } else {
-                sendJSONresponse(res, 404, {message: "Error while creating test community"});
+                utils.sendJSONresponse(res, 404, {message: "Error while creating test community"});
               }
             });
 
@@ -59,16 +58,15 @@ module.exports.register = function(req, res) {
 
 };
 
+// POST /login - User login
 module.exports.login = function(req, res) {
     // validate that required fields have been supplied
     if (!req.body.email || !req.body.password) {
-        sendJSONresponse(res, 400, {
+        utils.sendJSONresponse(res, 400, {
             "message": "All fields required"
         });
         return;
     }
-
-    console.log(req.body);
 
     req.body.email = req.body.email.toLowerCase();
 
@@ -77,20 +75,19 @@ module.exports.login = function(req, res) {
         var token;
         // return an error if Passport returns an error
         if (err) {
-            sendJSONresponse(res, 404, err);
+            utils.sendJSONresponse(res, 404, err);
             return;
         }
         // if Passport returned a user instance, generate and send a JWT (json web token)
         if (user) {
             token = user.generateJwt();
-            console.log(token);
 
-            sendJSONresponse(res, 200, {
+            utils.sendJSONresponse(res, 200, {
                 "token": token
             });
             // otherwise return infor message (why authentication failed)
         } else {
-            sendJSONresponse(res, 401, info);
+            utils.sendJSONresponse(res, 401, info);
         }
         // make sure that req and res are available to Passport
     })(req, res);

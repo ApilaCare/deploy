@@ -5,6 +5,8 @@
 
   var constants = require('./constants');
 
+//TODO: consistent callback params
+
   //save credit card info
   exports.saveCreditCard = function(stripeToken, email, callback) {
 
@@ -12,17 +14,15 @@
       source: stripeToken,
       description: email
     }).then(function(customer) {
-      console.log(customer);
       callback(true, customer.id);
 
     }).catch(function(customer) {
-      console.log("Error while saving the credit card");
-      console.log(customer);
       callback(false);
     });
 
   }
 
+  // retunts customer information by it's id
   exports.getCustomer = function(customer, callback) {
     stripe.customers.retrieve(
       customer,
@@ -45,11 +45,9 @@
       "customer" : customerId
     })
     .then(function(charge) {
-      console.log(charge);
       callback(true);
     })
     .catch(function(charge) {
-      console.log(charge);
       callback(false);
     });
   }
@@ -81,7 +79,7 @@
         }
       }
     );
-  }
+  };
 
   // returns subscription information
   exports.getSubscription = function(subscription, callback) {
@@ -95,7 +93,7 @@
         }
       }
     );
-  }
+  };
 
   // cancels the description
   exports.cancelSubscription = function(subscription, callback) {
