@@ -42788,8 +42788,8 @@ img {
   height: 40px;
   border-radius: 20px; }
 
-.ms-card .template-2 .media .image {
-  width: 100%; }
+.ms-card .template-5 .info, .ms-card .template-5 .media {
+  -ms-flex: 0 1 auto; }
 
 .ms-card .template-4 .info {
   position: absolute;
@@ -42804,13 +42804,14 @@ img {
   .ms-card .template-4 .media .image {
     width: 100%; }
 
-.ms-card .template-5 .media {
-  width: 80px;
-  min-width: 80px;
-  max-width: 80px; }
+.ms-card .template-2 .header .avatar .image {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px; }
 
-.ms-card .template-5 .info, .ms-card .template-5 .media {
-  -ms-flex: 0 1 auto; }
+.ms-card .template-2 .media .image {
+  width: 100%; }
 
 .ms-card .template-8 .media .image {
   width: 100%;
@@ -44264,6 +44265,29 @@ body.ms-search-bar-expanded #toolbar {
       right: 8px;
       bottom: 8px; }
 
+#scrumboard .settings-sidenav md-content.labels {
+  overflow-x: hidden;
+  overflow-y: hidden; }
+  #scrumboard .settings-sidenav md-content.labels md-list {
+    padding-top: 8px; }
+    #scrumboard .settings-sidenav md-content.labels md-list .label > div {
+      padding-left: 8px;
+      width: 100%; }
+    #scrumboard .settings-sidenav md-content.labels md-list .label .label-color-button {
+      margin: 0 16px 0 0; }
+    #scrumboard .settings-sidenav md-content.labels md-list .label .title {
+      margin: 0;
+      line-height: 40px;
+      cursor: pointer; }
+
+.labels-settings-menu-content .new-label-color-pick {
+  padding: 0 8px;
+  width: 208px; }
+  .labels-settings-menu-content .new-label-color-pick .color {
+    width: 24px;
+    height: 24px;
+    margin: 4px; }
+
 #scrumboard .settings-sidenav md-content.board-color-selection {
   overflow-x: hidden;
   overflow-y: hidden; }
@@ -44908,56 +44932,6 @@ md-dialog.event-calendar-dialog {
   #mail .center .content-card .content-wrapper .mail-tabs .content {
     position: relative; } }
 
-#lock {
-  height: 100%;
-  background: url("/assets/images/backgrounds/march.jpg") no-repeat;
-  background-size: cover; }
-  #lock #lock-form-wrapper {
-    -webkit-box-flex: 1;
-        -ms-flex: 1 0 auto;
-            flex: 1 0 auto;
-    padding: 32px; }
-    #lock #lock-form-wrapper #lock-form {
-      padding: 48px 32px 32px 32px;
-      width: 384px;
-      max-width: 384px;
-      background: #FFFFFF; }
-      #lock #lock-form-wrapper #lock-form .title {
-        margin-bottom: 8px;
-        font-size: 17px; }
-      #lock #lock-form-wrapper #lock-form .subtitle {
-        color: rgba(0, 0, 0, 0.54); }
-      #lock #lock-form-wrapper #lock-form .avatar-container {
-        position: relative;
-        margin-right: 16px; }
-        #lock #lock-form-wrapper #lock-form .avatar-container md-icon {
-          position: absolute;
-          top: -3px;
-          right: 2px; }
-      #lock #lock-form-wrapper #lock-form form {
-        width: 100%;
-        margin: 32px 0 0 0; }
-        #lock #lock-form-wrapper #lock-form form .submit-button {
-          width: 220px;
-          margin: 32px auto;
-          display: block; }
-      #lock #lock-form-wrapper #lock-form .message {
-        font-weight: 500;
-        text-align: center; }
-
-@media screen and (max-width: 960px) {
-  #lock #lock-form-wrapper {
-    padding: 16px; }
-    #lock #lock-form-wrapper #lock-form {
-      padding: 24px;
-      width: 100%; }
-      #lock #lock-form-wrapper #lock-form .subtitle {
-        text-align: center; }
-      #lock #lock-form-wrapper #lock-form .avatar-container {
-        margin-bottom: 10px; }
-      #lock #lock-form-wrapper #lock-form form .md-button {
-        width: 90%; } }
-
 #forgot-password {
   height: 100%;
   background: url("/assets/images/backgrounds/march.jpg") no-repeat;
@@ -45006,6 +44980,56 @@ md-dialog.event-calendar-dialog {
       padding: 24px;
       width: 100%; }
       #forgot-password #forgot-password-form-wrapper #forgot-password-form form .md-button {
+        width: 90%; } }
+
+#lock {
+  height: 100%;
+  background: url("/assets/images/backgrounds/march.jpg") no-repeat;
+  background-size: cover; }
+  #lock #lock-form-wrapper {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
+    padding: 32px; }
+    #lock #lock-form-wrapper #lock-form {
+      padding: 48px 32px 32px 32px;
+      width: 384px;
+      max-width: 384px;
+      background: #FFFFFF; }
+      #lock #lock-form-wrapper #lock-form .title {
+        margin-bottom: 8px;
+        font-size: 17px; }
+      #lock #lock-form-wrapper #lock-form .subtitle {
+        color: rgba(0, 0, 0, 0.54); }
+      #lock #lock-form-wrapper #lock-form .avatar-container {
+        position: relative;
+        margin-right: 16px; }
+        #lock #lock-form-wrapper #lock-form .avatar-container md-icon {
+          position: absolute;
+          top: -3px;
+          right: 2px; }
+      #lock #lock-form-wrapper #lock-form form {
+        width: 100%;
+        margin: 32px 0 0 0; }
+        #lock #lock-form-wrapper #lock-form form .submit-button {
+          width: 220px;
+          margin: 32px auto;
+          display: block; }
+      #lock #lock-form-wrapper #lock-form .message {
+        font-weight: 500;
+        text-align: center; }
+
+@media screen and (max-width: 960px) {
+  #lock #lock-form-wrapper {
+    padding: 16px; }
+    #lock #lock-form-wrapper #lock-form {
+      padding: 24px;
+      width: 100%; }
+      #lock #lock-form-wrapper #lock-form .subtitle {
+        text-align: center; }
+      #lock #lock-form-wrapper #lock-form .avatar-container {
+        margin-bottom: 10px; }
+      #lock #lock-form-wrapper #lock-form form .md-button {
         width: 90%; } }
 
 #login {
@@ -45108,45 +45132,6 @@ md-dialog.event-calendar-dialog {
       #login #login-form-wrapper #login-form .md-button.google, #login #login-form-wrapper #login-form .md-button.facebook {
         width: 80%; } }
 
-#maintenance {
-  height: 100%;
-  background: url("/assets/images/backgrounds/march.jpg") no-repeat;
-  background-size: cover; }
-  #maintenance #maintenance-form-wrapper {
-    -webkit-box-flex: 1;
-        -ms-flex: 1 0 auto;
-            flex: 1 0 auto;
-    padding: 32px; }
-    #maintenance #maintenance-form-wrapper #maintenance-form {
-      max-width: 384px;
-      padding: 32px;
-      background: #FFFFFF;
-      text-align: center; }
-      #maintenance #maintenance-form-wrapper #maintenance-form .logo {
-        width: 128px;
-        height: 128px;
-        line-height: 128px;
-        font-size: 86px;
-        font-weight: 500;
-        margin: 32px auto;
-        color: white;
-        border-radius: 2px; }
-      #maintenance #maintenance-form-wrapper #maintenance-form .title {
-        font-size: 17px;
-        margin-top: 16px; }
-      #maintenance #maintenance-form-wrapper #maintenance-form .subtitle {
-        margin: 16px 0;
-        max-width: 300px;
-        color: rgba(0, 0, 0, 0.54);
-        font-size: 15px; }
-
-@media screen and (max-width: 600px) {
-  #maintenance #maintenance-form-wrapper {
-    padding: 16px; }
-    #maintenance #maintenance-form-wrapper #maintenance-form {
-      padding: 24px;
-      width: 100%; } }
-
 #register {
   height: 100%;
   background: url("/assets/images/backgrounds/march.jpg") no-repeat;
@@ -45203,6 +45188,45 @@ md-dialog.event-calendar-dialog {
       width: 100%; }
       #register #register-form-wrapper #register-form form .md-button {
         width: 90%; } }
+
+#maintenance {
+  height: 100%;
+  background: url("/assets/images/backgrounds/march.jpg") no-repeat;
+  background-size: cover; }
+  #maintenance #maintenance-form-wrapper {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
+    padding: 32px; }
+    #maintenance #maintenance-form-wrapper #maintenance-form {
+      max-width: 384px;
+      padding: 32px;
+      background: #FFFFFF;
+      text-align: center; }
+      #maintenance #maintenance-form-wrapper #maintenance-form .logo {
+        width: 128px;
+        height: 128px;
+        line-height: 128px;
+        font-size: 86px;
+        font-weight: 500;
+        margin: 32px auto;
+        color: white;
+        border-radius: 2px; }
+      #maintenance #maintenance-form-wrapper #maintenance-form .title {
+        font-size: 17px;
+        margin-top: 16px; }
+      #maintenance #maintenance-form-wrapper #maintenance-form .subtitle {
+        margin: 16px 0;
+        max-width: 300px;
+        color: rgba(0, 0, 0, 0.54);
+        font-size: 15px; }
+
+@media screen and (max-width: 600px) {
+  #maintenance #maintenance-form-wrapper {
+    padding: 16px; }
+    #maintenance #maintenance-form-wrapper #maintenance-form {
+      padding: 24px;
+      width: 100%; } }
 
 #reset-password {
   height: 100%;
