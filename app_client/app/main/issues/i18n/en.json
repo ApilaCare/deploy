@@ -83,6 +83,8 @@
         "MONTH": "Month",
         "NO_SCHEDULED_CARD": "There is no scheduled card.",
         "ASSIGN_THE_DATE_TO_CARDS": "Assign the date to cards",
+        "FINAL_PLAN": "What is the solution to the issue?",
+        "FINAL_PLAN_ADD": "Add item",
         "ERRORS": {
             "TITLE_REQUIRED": "Title field is required"
         }
