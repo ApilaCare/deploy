@@ -25,11 +25,18 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
+var url = "";
 
 if(process.env.NODE_ENV === 'production') {
+  url = "https://apila.care";
+} else if(process.env.NODE_ENV === 'staging') {
+  url = "https://apila.us";
+}
+
+if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
   app.get('*', function(req, res, next) {
     if(req.headers['x-forwarded-proto'] != 'https') {
-        res.redirect('https://apila.care' + req.url);
+        res.redirect(url + req.url);
       } else {
         next();
       }
