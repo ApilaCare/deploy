@@ -6,7 +6,6 @@ var communityCtrl = require('../communities/communities');
 var todoCtrl = require('../todos/todos');
 var utils = require('../../services/utils');
 
-
 // POST /register - User registration
 module.exports.register = function(req, res) {
 
