@@ -1,7 +1,14 @@
 var mongoose = require('mongoose');
 
+var finalPlanSchema = new mongoose.Schema({
+  text: {type: String},
+  checklist: {type: Boolean},
+  author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  createdOn: {type: Date, default: Date.now}
+});
+
 var issueCommentSchema = new mongoose.Schema({
-    author: {type: String, required: true},
+    author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     commentText: {type: String, required: true},
     createdOn: {type: Date, default: Date.now}
 });
@@ -42,9 +49,19 @@ var memberRecoverSchema =  new mongoose.Schema({
     active: {type: Boolean, default: false} // recovery is active when the boss confirms the password
 });
 
+var updateInfoSchema = new mongoose.Schema({
+  updateBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  updateDate: {type: Date, default: Date.now},
+  updateField: [mongoose.Schema.Types.Mixed]
+});
+
 var issueSchema = new mongoose.Schema({
     title: {type: String,required: true},
-    responsibleParty: {type: String,required: true},
+    responsibleParty: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
     resolutionTimeframe: {type: String, required: true},
     submitDate: {type: Date, default: Date.now},
     shelvedDate: {type: Date},
@@ -60,7 +77,8 @@ var issueSchema = new mongoose.Schema({
     due: {type: Date},
     confidential: {type: Boolean},
     idLabels: [String],
-    updateInfo: [mongoose.Schema.Types.Mixed],
+    finalPlan: [finalPlanSchema],
+    updateInfo: [updateInfoSchema],
     community: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Community'
@@ -68,10 +86,4 @@ var issueSchema = new mongoose.Schema({
 });
 
 mongoose.model('Issue', issueSchema);
-mongoose.model('MemberRecover', memberRecoverSchema)
-
-/* adding documents to mongodb
-db.issues.save({
-
-})
-*/
+mongoose.model('MemberRecover', memberRecoverSchema);
