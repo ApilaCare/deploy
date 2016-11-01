@@ -12,7 +12,7 @@ var cors = require('cors');
 
 
 io.set('transports',['xhr-polling']);
-require('./services/activities.service')(io);
+require('./app_api/services/activities.service')(io);
 
 require('./app_api/models/db');
 require('./app_api/config/passport');
