@@ -11,8 +11,6 @@ var passport = require('passport');
 var cors = require('cors');
 var path = require('path');
 
-
-io.set('transports',['xhr-polling']);
 require('./app_api/services/activities.service')(io);
 
 require('./app_api/models/db');
