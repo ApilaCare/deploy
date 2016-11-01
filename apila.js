@@ -9,6 +9,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var cors = require('cors');
+var path = require('path');
 
 
 io.set('transports',['xhr-polling']);
