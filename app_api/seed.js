@@ -6,7 +6,6 @@ require('./models/db');
 var User = mongoose.model('User');
 var Community = mongoose.model('Community');
 
-
 var USERS_NUM = 5;
 
 var usersId = [];
