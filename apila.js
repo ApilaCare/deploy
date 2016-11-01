@@ -1,12 +1,18 @@
-// require('dotenv').load();
+//require('dotenv').load();
 var debug = require('debug')('Express4');
 var express = require('express');
+var app = express();
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var cors = require('cors');
-var path = require('path');
+
+
+io.set('transports',['xhr-polling']);
+require('./services/activities.service')(io);
 
 require('./app_api/models/db');
 require('./app_api/config/passport');
@@ -14,8 +20,6 @@ require('./app_api/config/passport');
 // (commented out because routes in the server are not used)
 // var routes = require('./app_server/routes/index');
 var routesApi = require('./app_api/routes/index');
-
-var app = express();
 
 //app.use(cors());
 app.use(logger('dev'));
