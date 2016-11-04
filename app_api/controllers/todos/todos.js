@@ -64,8 +64,6 @@ module.exports.addTask = function(req, res) {
     return;
   }
 
-  let userId = req.payload._id;
-
   let newTask = {
     "text" : req.body.text,
     "occurrence" : req.body.occurrence,
@@ -79,6 +77,8 @@ module.exports.addTask = function(req, res) {
     "everyMonth": req.body.everyMonth,
     "cycleDate" : new Date()
   };
+
+  let userId = req.payload._id;
 
   let todo = ToDo.findById(todoId).exec();
 
@@ -259,7 +259,6 @@ function isOverdue(task, currTime) {
   return overdue;
 
 }
-
 
 function setToDefault(task, activeCycles) {
   _.forEach(activeCycles, function(cycle) {
