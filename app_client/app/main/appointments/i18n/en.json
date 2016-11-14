@@ -31,6 +31,9 @@
         "RESIDENT_GOING": "Resident going",
         "LOCATION": "Location",
         "DOCTOR": "Doctor",
+        "PHONE_NUMBER": "Phone Number",
+        "LOCATION_NAME": "Location Name",
+        "WORKING_HOURS": "Working Hours",
         "TRANSPORTATION": "Transportation",
         "ERRORS": {
             "REASON_REQUIRED": "Reason field is required",

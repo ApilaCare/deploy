@@ -84,7 +84,6 @@ router.get('/issues/:issueid/comments/', sanitizeInput, auth, ctrlIssueComments.
 
 // issue checklists
 router.post('/issues/:issueid/checklists/new', sanitizeInput , auth, ctrlIssueChecklists.issueChecklistsCreate);
-router.put('/issues/:issueid/checklists/newitem/:listid', sanitizeInput , auth, ctrlIssueChecklists.issueChecklistAddItem);
 router.put('/issues/:issueid/checklists/:checklistid', sanitizeInput , auth, ctrlIssueChecklists.issueChecklistsUpdateOne);
 router.delete('/issues/:issueid/checklists/:checklistid', sanitizeInput , auth, ctrlIssueChecklists.issueChecklistsDeleteOne);
 
@@ -123,6 +122,7 @@ router.get('/users/:userid/image', ctrlUsers.userImage);
 router.post('/users/:userid/upload', sanitizeInput , auth, multipartyMiddleware, ctrlUsers.uploadImage);
 router.post('/users/forgotpassowrd/:email', ctrlUsers.forgotPassword);
 router.post('/users/reset/:token', ctrlUsers.resetPassword);
+router.post('/users/verify/:token', ctrlUsers.verifyEmail);
 router.put('/users/change/:userid', sanitizeInput , auth, ctrlUsers.updateUsername);
 
 //users payment
