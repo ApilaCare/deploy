@@ -8,6 +8,7 @@ var _ = require('lodash');
 var fs = require('fs');
 var imageUploadService = require('../../services/imageUpload');
 const activitiesService = require('../../services/activities.service');
+const carePoints = require('./care_points');
 
 
 // POST /residents/new - Creates a new resident
@@ -16,14 +17,18 @@ module.exports.residentsCreate = function(req, res) {
   let residentData = req.body;
   residentData.submitBy = req.payload._id;
   residentData.community = req.body.community._id;
+  residentData.carePoints = 0; //set care point so the sort on the frontend works
 
   Resid.create(residentData, function(err, resident) {
     if (err) {
       utils.sendJSONresponse(res, 400, err);
     } else {
 
-      let text = " created resident " + req.body.firstName + " " + req.body.lastName;
-      activitiesService.addActivity(text, req.payload._id, "resident-create", req.body.community._id);
+      let text = ` created resident ${req.body.firstName}  ${req.body.lastName}`;
+
+      let community = req.body.community._id ? req.body.community._id : req.body.community;
+
+      activitiesService.addActivity(text, req.payload._id, "resident-create", community);
 
       utils.sendJSONresponse(res, 200, resident);
     }
@@ -256,6 +261,7 @@ module.exports.updateListItem = function(req, res) {
           "updateDate" : new Date(),
           "updateBy" : req.body.updateBy
         });
+        console.log(`UPDATE BY ${req.body.updateBy}`);
 
         resident.save(function(err, r) {
           if(err) {
@@ -317,6 +323,8 @@ module.exports.residentsUpdateOne = function(req, res) {
   req.body.foodLikes = req.body.newfoodLikes;
   req.body.foodDislikes = req.body.newfoodDislikes;
 
+  req.body.carePoints = carePoints.calculateCarePoints(req.body);
+
   Resid.findOneAndUpdate({
     _id: req.params.residentid
   }, req.body)
@@ -327,8 +335,10 @@ module.exports.residentsUpdateOne = function(req, res) {
       utils.sendJSONresponse(res, 404, err);
     } else {
 
-      let text = " updated resident " + req.body.firstName + " " + req.body.lastName;
-      activitiesService.addActivity(text, req.payload._id, "resident-update", req.body.community._id);
+      let community = req.body.community._id ? req.body.community._id : req.body.community;
+
+      let text = ` updated resident  ${req.body.firstName} ${req.body.lastName}`;
+      activitiesService.addActivity(text, req.payload._id, "resident-update", community);
 
       utils.sendJSONresponse(res, 200, resident);
     }
@@ -355,8 +365,8 @@ module.exports.uploadOutsideAgencyAssesment = function(req, res) {
   };
 
   imageUploadService.upload(params, file.path, function() {
-    var fullUrl = "https://" + imageUploadService.getRegion() + ".amazonaws.com/" +
-      imageUploadService.getBucket() + "/" + escape(file.originalFilename);
+    let fullUrl = `https://${imageUploadService.getRegion()}.amazonaws.com/
+      ${imageUploadService.getBucket()}/${escape(file.originalFilename)}`;
 
     fs.unlinkSync(file.path);
 
