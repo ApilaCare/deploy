@@ -36,6 +36,7 @@ if(process.env.NODE_ENV === 'production') {
   url = "https://apila.us";
 }
 
+/*
 if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
   app.get('*', function(req, res, next) {
     if(req.headers['x-forwarded-proto'] != 'https') {
@@ -45,7 +46,7 @@ if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') 
       }
   });
 }
-
+*/
 
 app.use('/api', routesApi);
 app.use('/files', express.static(__dirname + 'upload_storage'));
