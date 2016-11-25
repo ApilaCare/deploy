@@ -4,7 +4,7 @@ var roomStyleSchema = new mongoose.Schema({
     name: {type: String, required: true},
     area: {type: Number},
     areaUnit: {type: Boolean, default: true}, // if true: feet^2 | if false: meter^2
-    rooms: [Number],
+    rooms: [String],
 
     submitOn: {type: Date, "default": Date.now},
     submitBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
@@ -25,7 +25,7 @@ var communitySchema = new mongoose.Schema({
     address: {type: String},
     logo: {type: String},
     fax: {type: String},
-    floors: [Number],
+    floors: {type: Number},
     rooms: {type: Number},
     roomStyle: [roomStyleSchema]
 });
