@@ -35,6 +35,7 @@
         "LOCATION_NAME": "Location Name",
         "WORKING_HOURS": "Working Hours",
         "TRANSPORTATION": "Transportation",
+        "APPOINTMENT_MAP": "Appointment Map",
         "ERRORS": {
             "REASON_REQUIRED": "Reason field is required",
             "RESIDENT_GOING_REQUIRED" : "Resident going field is required",
