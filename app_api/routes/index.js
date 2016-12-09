@@ -74,6 +74,7 @@ router.get('/issues/count/:userid/id/:communityid', sanitizeInput , auth, ctrlIs
 router.get('/issues/issuescount/:communityid', sanitizeInput , auth, ctrlIssues.issuesCount);
 router.get('/issues/due/:communityid', sanitizeInput , auth, ctrlIssues.dueIssuesList);
 router.get('/issues/:issueid', sanitizeInput , auth, ctrlIssues.issuesReadOne);
+router.get('/issues/:issueid/populate', sanitizeInput, auth, ctrlIssues.issuesPopulateOne);
 router.get('/issues/:issueid/updateinfo', sanitizeInput, auth, ctrlIssues.issueUpdateInfo);
 router.post('/issues/new', sanitizeInput , auth, ctrlIssues.issuesCreate);
 router.put('/issues/:issueid', sanitizeInput , auth, ctrlIssues.issuesUpdateOne);
@@ -140,6 +141,7 @@ router.post('/login', ctrlAuth.login);
 
 // todos
 router.get('/todos/:todoid', sanitizeInput, auth, ctrlToDos.listTasks);
+router.get('/todos/:todoid/activecount', sanitizeInput, auth, ctrlToDos.activeTasksCount);
 router.post('/todos/:todoid', sanitizeInput, auth, ctrlToDos.addTask);
 router.put('/todos/:todoid/task/:taskid', sanitizeInput, auth, ctrlToDos.updateTask);
 router.delete('/todos/:todoid/task/:taskid', sanitizeInput, auth, ctrlToDos.deleteTask);
