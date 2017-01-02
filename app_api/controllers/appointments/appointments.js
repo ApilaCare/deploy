@@ -44,13 +44,13 @@ module.exports.appointmentsCreate = function(req, res) {
             activitiesService.addActivity(text, req.payload._id,
                                             "appointment-create", req.body.community._id);
 
+
             utils.sendJSONresponse(res, 200, appoint);
           }
 
 
         });
 
-      //getFullAppointment(req, res, appointment._id);
     }
   });
 };
@@ -193,31 +193,4 @@ module.exports.appointmentsDeleteOne = function(req, res) {
       "message": "No appointmentid"
     });
   }
-};
-
-//HELPER FUNCTIONS
-
-//get's appointment and resident info populated
-var getFullAppointment = function(req, res, appointId) {
-  Appoint
-    .findById(appointId)
-    .populate("residentGoing")
-    .exec(function(err, appointment) {
-      if (!appointment) {
-
-        utils.sendJSONresponse(res, 404, {"error_list" : true});
-        return;
-      } else if (err) {
-        console.log(err);
-        utils.sendJSONresponse(res, 404, {"error_list" : true});
-        return;
-      }
-
-      let text = " created " + appointment.residentGoing.firstName + " " + appointment.residentGoing.lastName +
-                           " to " + appointment.locationName;
-      activitiesService.addActivity(text, req.payload._id,
-                                      "appointment-create", req.body.community._id);
-
-      utils.sendJSONresponse(res, 200, appointment);
-    });
 };

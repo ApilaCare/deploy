@@ -1,5 +1,13 @@
 var mongoose = require('mongoose');
 
+var chatSchema = new mongoose.Schema({
+  message: {type: String, required: true},
+  userSend: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  userReceived: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  community: {type: mongoose.Schema.Types.ObjectId, ref: 'Community'},
+  timeSent: {type: Date, default: Date.now()}
+});
+
 var roomStyleSchema = new mongoose.Schema({
     name: {type: String, required: true},
     area: {type: Number},
@@ -23,11 +31,18 @@ var communitySchema = new mongoose.Schema({
     website: {type: String},
     phone: {type: String},
     address: {type: String},
+    town: {type: String},
     logo: {type: String},
     fax: {type: String},
-    floors: {type: Number},
+    numFloors: {type: Number},
+    floors: [{
+      floorNumber: {type: Number},
+      startRoom: {type: String},
+      endRoom: {type: String}
+    }],
     rooms: {type: Number},
-    roomStyle: [roomStyleSchema]
+    roomStyle: [roomStyleSchema],
+    communityChat: [chatSchema]
 });
 
 mongoose.model('Community', communitySchema);

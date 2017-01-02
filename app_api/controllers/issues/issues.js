@@ -23,11 +23,12 @@ module.exports.issuesCreate = function(req, res) {
     } else {
 
       User.populate(issue, {
-        path: 'responsibleParty submitBy'
+        path: 'responsibleParty submitBy',
+        select: '_id name userImage'
       }, function(err, populatedIssue) {
 
         activitiesService.addActivity(" created issue " + req.body.title, req.body.responsibleParty,
-                                        "issue-create", req.body.community._id);
+                                        "issue-create", req.body.community._id, 'community');
 
         utils.sendJSONresponse(res, 200, populatedIssue);
       });
@@ -210,16 +211,20 @@ module.exports.issuesList = function(req, res) {
       //Populate user model so we have responsibleParty name and not just the _id
       User.populate(issues, [{
         path: '_id',
-        model: 'User'
+        model: 'User',
+        select: '_id name userImage'
       },{
         path: 'updateInfo.updateBy',
-        model: 'User'
+        model: 'User',
+        select: '_id name userImage'
       },{
         path: 'submitBy',
-        model: 'User'
+        model: 'User',
+        select: '_id name userImage'
       },{
         path: 'responsibleParty',
-        model: 'User'
+        model: 'User',
+        select: '_id name userImage'
       }], function(err) {
         if (err) {
           utils.sendJSONresponse(res, 404, {
@@ -391,7 +396,6 @@ module.exports.issuesUpdateOne = function(req, res) {
           }).indexOf(req.body.deletedMember), 1);
         } else {
           issue.idMembers = req.body.idMembers;
-          console.log(issue.idMembers);
         }
 
 
@@ -407,9 +411,25 @@ module.exports.issuesUpdateOne = function(req, res) {
             console.log(err);
             utils.sendJSONresponse(res, 404, err);
           } else {
-            Iss.populate(issue.updateField, [{'path' : 'updateBy'}, {'path' : 'submitBy'}, {'path' : 'checklists.author'}],
+            Iss.populate(issue.updateField,
+              [{'path' : 'updateBy', select: '_id name userImage'},
+               {'path' : 'submitBy', select: '_id name userImage'},
+                {'path' : 'checklists.author', select: '_id name userImage'}],
             function(err, iss) {
-                    utils.sendJSONresponse(res, 200, iss);
+              if(err) {
+                utils.sendJSONresponse(res, 500, err);
+              } else {
+                if(req.body.addedMember) {
+                  activitiesService.addActivity(" added member " + req.body.addedMember.name + " to issue" + issue.title, req.body.responsibleParty,
+                                                  "issue-update", issue.community, 'user', req.body.addedMember._id);
+                } else {
+                  activitiesService.addActivity(" updated issue " + req.body.title, req.body.responsibleParty,
+                                                  "issue-update", issue.community, 'community');
+                }
+
+                utils.sendJSONresponse(res, 200, iss);
+              }
+
             });
           }
         });

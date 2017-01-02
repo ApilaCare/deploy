@@ -51,6 +51,9 @@ var ctrlCommunities = require('../controllers/communities/communities');
 // todos
 var ctrlToDos = require('../controllers/todos/todos');
 
+// activity
+var ctrlActivity = require('../controllers/activities/activities');
+
 // communities
 router.get('/communities/', sanitizeInput, auth, ctrlCommunities.communitiesList);
 router.get('/communites/canceled/:userid', sanitizeInput , auth, ctrlCommunities.hasCanceledCommunity);
@@ -58,7 +61,9 @@ router.post('/communities/new', ctrlCommunities.communitiesCreate);
 router.post('/communites/:communityid/role/:userid', sanitizeInput , auth, ctrlCommunities.addRole);
 router.post('/communites/:communityid/restore/:userid', sanitizeInput , auth, ctrlCommunities.restoreCommunity);
 router.post('/communities/:communityid/roomstyle', sanitizeInput, auth, ctrlCommunities.createRoomStyle);
+router.post('/communities/:communityid/floor', sanitizeInput, auth, ctrlCommunities.addFloor);
 router.put('/communities/accept/:communityid/', sanitizeInput , auth, ctrlCommunities.acceptMember);
+router.put('/communities/:communityid/floor', sanitizeInput, auth, ctrlCommunities.updateFloor);
 router.put('/communities/decline/:communityid/', sanitizeInput , auth, ctrlCommunities.declineMember);
 router.put('/communities/pending/:communityid/', sanitizeInput , auth, ctrlCommunities.addPendingMember);
 router.put('/communities/:communityid/roomstyle/:roomid', sanitizeInput, auth, ctrlCommunities.updateRoomStyle);
@@ -145,6 +150,9 @@ router.get('/todos/:todoid/activecount', sanitizeInput, auth, ctrlToDos.activeTa
 router.post('/todos/:todoid', sanitizeInput, auth, ctrlToDos.addTask);
 router.put('/todos/:todoid/task/:taskid', sanitizeInput, auth, ctrlToDos.updateTask);
 router.delete('/todos/:todoid/task/:taskid', sanitizeInput, auth, ctrlToDos.deleteTask);
+
+// Activity
+router.post('/activity/:todoid', sanitizeInput, auth, ctrlActivity.createToDoActivity);
 
 // residents
 router.get('/residents/list/:communityid', sanitizeInput , auth, ctrlResidents.residentsList);

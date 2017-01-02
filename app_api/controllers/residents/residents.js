@@ -9,6 +9,7 @@ var fs = require('fs');
 var imageUploadService = require('../../services/imageUpload');
 const activitiesService = require('../../services/activities.service');
 const carePoints = require('./care_points');
+const sanitize = require("sanitize-filename");
 
 
 // POST /residents/new - Creates a new resident
@@ -28,7 +29,7 @@ module.exports.residentsCreate = function(req, res) {
 
       let community = req.body.community._id ? req.body.community._id : req.body.community;
 
-      activitiesService.addActivity(text, req.payload._id, "resident-create", community);
+      activitiesService.addActivity(text, req.payload._id, "resident-create", community, 'community');
 
       utils.sendJSONresponse(res, 200, resident);
     }
@@ -355,7 +356,7 @@ module.exports.residentsUpdateOne = function(req, res) {
       let community = req.body.community._id ? req.body.community._id : req.body.community;
 
       let text = ` updated resident  ${req.body.firstName} ${req.body.lastName}`;
-      activitiesService.addActivity(text, req.payload._id, "resident-update", community);
+      activitiesService.addActivity(text, req.payload._id, "resident-update", community, 'community');
 
         console.log(resident);
 
@@ -379,13 +380,13 @@ module.exports.uploadOutsideAgencyAssesment = function(req, res) {
   var stream = fs.createReadStream(file.path);
 
   var params = {
-    Key: file.originalFilename,
+    Key: sanitize(file.originalFilename),
     Body: stream
   };
 
   imageUploadService.upload(params, file.path, function() {
     let fullUrl = `https://${imageUploadService.getRegion()}.amazonaws.com/
-      ${imageUploadService.getBucket()}/${escape(file.originalFilename)}`;
+      ${imageUploadService.getBucket()}/${escape(sanitize(file.originalFilename))}`;
 
     fs.unlinkSync(file.path);
 

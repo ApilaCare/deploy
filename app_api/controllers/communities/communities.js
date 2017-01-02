@@ -129,7 +129,7 @@ module.exports.addPendingMember = function(req, res) {
             } else {
 
               let text = " wants to join " + community.name + " community";
-              activitiesService.addActivity(text, userId, "community-join", community._id);
+              activitiesService.addActivity(text, userId, "community-join", community._id, 'community');
 
               utils.sendJSONresponse(res, 200, community);
             }
@@ -363,7 +363,7 @@ module.exports.updateRoomStyle = function(req, res) {
 
        community.save((err, comm) => {
          if(!err) {
-           utils.sendJSONresponse(res, 200, {});
+           utils.sendJSONresponse(res, 200, comm.roomStyle);
          } else {
            utils.sendJSONresponse(res, 500, err);
          }
@@ -402,7 +402,7 @@ module.exports.createRoomStyle = function(req, res) {
 //PUT /communities/:communityid/contactinfo - Updates community Info of a community
 module.exports.updateContactAndRoomInfo = function(req, res) {
 
-  Community.findOne({"_id": req.params.communityid})
+  Community.findById(req.params.communityid)
    .exec((err, community) => {
 
      if(err) {
@@ -412,12 +412,16 @@ module.exports.updateContactAndRoomInfo = function(req, res) {
        community.website = req.body.website;
        community.fax = req.body.fax;
        community.address = req.body.address;
+       community.town = req.body.town;
 
-       community.floors = req.body.floors || 0;
+       community.numFloors = req.body.numFloors || 0;
        community.rooms = req.body.rooms || 0;
+
+       community.floors = req.body.floors;
 
        community.save((err, com) => {
          if(err) {
+           console.log(err);
            utils.sendJSONresponse(res, 500, err);
          } else {
            utils.sendJSONresponse(res, 200, com);
@@ -492,6 +496,56 @@ module.exports.restoreCommunity = function(req, res) {
       }
     });
 };
+
+//POST
+module.exports.addFloor = async function(req, res) {
+
+  let communityid = req.params.communityid;
+
+  if (utils.checkParams(req, res, ['communityid'])) {
+    return;
+  }
+
+  try {
+    let community = await Community.findById(communityid).exec();
+
+    community.floors.push(req.body);
+
+    await community.save();
+
+    utils.sendJSONresponse(res, 200, community);
+
+  } catch(err) {
+    utils.sendJSONresponse(res, 404, err);
+  }
+
+};
+
+//PUT /communities/:communityid/floor - Updating floor info
+module.exports.updateFloor  = async (req, res) => {
+  let communityid = req.params.communityid;
+
+  if (utils.checkParams(req, res, ['communityid'])) {
+    return;
+  }
+
+  try {
+    let community = await Community.findById(communityid).exec();
+
+    console.log(req.body);
+
+    community.floors = req.body;
+
+    await community.save();
+
+    utils.sendJSONresponse(res, 200, community.floors);
+
+  } catch(err) {
+    utils.sendJSONresponse(res, 404, err);
+  }
+
+}
+
 
 module.exports.doCreateCommunity = function(communityInfo, callback) {
 
