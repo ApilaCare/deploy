@@ -11,7 +11,6 @@ const crypto = require('crypto');
 
 const cons = require('../../services/constants');
 
-
 // POST /register - User registration
 module.exports.register = function(req, res) {
 
