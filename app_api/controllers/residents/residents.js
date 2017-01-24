@@ -37,7 +37,7 @@ module.exports.residentsCreate = function(req, res) {
 };
 
 // GET /residents/list/:communityid - List all residents of a community
-module.exports.residentsList = function(req, res) {
+module.exports.residentsList = async (req, res) => {
 
   var community = req.params.communityid;
 
@@ -45,19 +45,37 @@ module.exports.residentsList = function(req, res) {
     return;
   }
 
-  Resid.find({'community': community})
-    .select('_id firstName lastName aliasName carePoints')
-    .exec(function(err, residents) {
-      if (err) {
-        utils.sendJSONresponse(res, 404, {
-          'message': 'Error listing residents'
-        });
-        console.log(err);
-      } else {
-        utils.sendJSONresponse(res, 200, residents);
-      }
+  try {
 
-    });
+    let fields = '_id firstName lastName aliasName carePoints';
+
+    let residents = await Resid.find({'community': community})
+                          .select(fields).sort({'carePoints': -1}).exec();
+
+    utils.sendJSONresponse(res, 200, residents);
+  } catch(err) {
+    utils.sendJSONresponse(res, 500, err);
+  }
+
+};
+
+// GET /residents/full-list/:communityid - Full detailed List all residents of a community
+module.exports.residentsFullList = async (req, res) => {
+
+  var community = req.params.communityid;
+
+  if (utils.checkParams(req, res, ['communityid'])) {
+    return;
+  }
+
+  try {
+    let residents = await Resid.find({'community': community}).exec();
+
+    utils.sendJSONresponse(res, 200, residents);
+  } catch(err) {
+    utils.sendJSONresponse(res, 500, err);
+  }
+
 };
 
 
@@ -273,7 +291,7 @@ module.exports.updateListItem = function(req, res) {
           "updateDate" : new Date(),
           "updateBy" : req.body.updateBy
         });
-        console.log(`UPDATE BY ${req.body.updateBy}`);
+
 
         resident.save(function(err, r) {
           if(err) {
@@ -336,8 +354,6 @@ module.exports.residentsUpdateOne = function(req, res) {
   req.body.foodDislikes = req.body.newfoodDislikes;
 
   req.body.carePoints = carePoints.calculateCarePoints(req.body);
-
-  console.log(`${req.body.timeOfBathing}  | ${req.body.typeOfBathing}  | ${req.body.frequencyOfBathing}`);
 
   Resid.findOneAndUpdate({
     _id: req.params.residentid
