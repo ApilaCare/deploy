@@ -84,7 +84,9 @@ router.get('/issues/:issueid/populate', sanitizeInput, auth, ctrlIssues.issuesPo
 router.get('/issues/:issueid/updateinfo', sanitizeInput, auth, ctrlIssues.issueUpdateInfo);
 router.post('/issues/new', sanitizeInput , auth, ctrlIssues.issuesCreate);
 router.put('/issues/:issueid', sanitizeInput , auth, ctrlIssues.issuesUpdateOne);
+router.put('/issues/:issueid/updateinfo', sanitizeInput, auth, ctrlIssues.addUpdateInfo);
 router.put('/issues/:issueid/finalplan', sanitizeInput, auth, ctrlIssues.addFinalPlan);
+router.put('/issues/:issueid/plan/:planid', sanitizeInput, auth, ctrlIssues.updateFinalPlan);
 router.delete('/issues/:issueid', sanitizeInput , auth, ctrlIssues.issuesDeleteOne);
 
 // issue comments
@@ -98,9 +100,11 @@ router.put('/issues/:issueid/checklists/:checklistid', sanitizeInput , auth, ctr
 router.delete('/issues/:issueid/checklists/:checklistid', sanitizeInput , auth, ctrlIssueChecklists.issueChecklistsDeleteOne);
 
 // issue labels
-router.post('/issues/:issueid/labels/new', sanitizeInput , auth, ctrlIssueLabels.issueLabelsCreate);
-router.put('/issues/:issueid/labels/:labelid', sanitizeInput , auth, ctrlIssueLabels.issueLabelsUpdateOne);
-router.delete('/issues/:issueid/labels/:labelid', sanitizeInput , auth, ctrlIssueLabels.issueLabelsDeleteOne);
+router.post('/issues/labels/:communityid', sanitizeInput, auth, ctrlIssueLabels.createLabel);
+router.post('/issues/:issueid/labels/:labelid', sanitizeInput , auth, ctrlIssueLabels.addLabelToCard);
+router.put('/issues/:communityid/labels/:labelname', sanitizeInput , auth, ctrlIssueLabels.updateLabel);
+router.delete('/issues/:issueid/labels/:labelname', sanitizeInput , auth, ctrlIssueLabels.removeLabelFromCard);
+router.delete('/community/:communityid/labels/:labelname', sanitizeInput , auth, ctrlIssueLabels.deleteLabel);
 
 // issue attachments
 router.post('/issues/:issueid/attachments/new', sanitizeInput , auth, multipartyMiddleware, ctrlIssueAttachments.issueAttachmentsCreate);

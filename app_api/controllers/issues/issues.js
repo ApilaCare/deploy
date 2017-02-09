@@ -5,6 +5,8 @@ var utils = require('../../services/utils');
 const activitiesService = require('../../services/activities.service');
 const ToDo = mongoose.model('ToDo');
 
+const Labels = mongoose.model('Labels');
+
 // POST /issues/new - Creates a new issue
 module.exports.issuesCreate = function(req, res) {
 
@@ -212,25 +214,16 @@ module.exports.issuesList = function(req, res) {
         model: 'User',
         select: '_id name userImage'
       },{
-        path: 'updateInfo.updateBy',
+        path: 'issues.responsibleParty',
         model: 'User',
         select: '_id name userImage'
-      },{
-        path: 'submitBy',
-        model: 'User',
-        select: '_id name userImage'
-      },{
-        path: 'responsibleParty',
-        model: 'User',
-        select: '_id name userImage'
-      }], function(err) {
+      }], function(err, populated) {
         if (err) {
           utils.sendJSONresponse(res, 404, {
             'message': err
           });
         } else {
-          console.log(issues);
-          utils.sendJSONresponse(res, 200, issues);
+          utils.sendJSONresponse(res, 200, populated);
         }
 
       });
@@ -292,14 +285,20 @@ module.exports.issuesPopulateOne = (req, res) => {
 
   Iss.findById(req.params.issueid)
       .populate("checklists.author", "name _id")
-      .populate("finalPlan.author", "name _id")
-      .populate("responsibleParty", "name _id")
+      .populate("finalPlan.author", "name _id userImage")
+      .populate("responsibleParty", "name _id userImage")
+      .populate("submitBy", "name _id")
+    //  .populate("labels", "color name")
       .exec((err, issue) => {
 
         if(!err) {
-          console.log(issue);
 
-          utils.sendJSONresponse(res, 200, issue);
+          Labels.populate(issue, {path: "labels", model:"Labels"}, function(err, d) {
+            console.log(d);
+            utils.sendJSONresponse(res, 200, issue);
+          });
+
+
         } else {
           utils.sendJSONresponse(res, 404, err);
         }
@@ -347,12 +346,6 @@ module.exports.issuesUpdateOne = function(req, res) {
     return;
   }
 
-  var updateInfo = {
-    "updateBy": req.body.modifiedBy,
-    "updateDate": req.body.modifiedDate,
-    "updateField": req.body.updateField
-  };
-
   Iss
     .findById(req.params.issueid)
     .exec(
@@ -372,7 +365,7 @@ module.exports.issuesUpdateOne = function(req, res) {
           issue.responsibleParty = req.body.responsibleParty._id || req.body.responsibleParty;
         }
 
-        if(req.body.submitBy._id) {
+        if(req.body.submitBy && req.body.submitBy._id) {
           issue.submitBy = req.body.submitBy._id;
         }
 
@@ -394,14 +387,6 @@ module.exports.issuesUpdateOne = function(req, res) {
           }).indexOf(req.body.deletedMember), 1);
         } else {
           issue.idMembers = req.body.idMembers;
-        }
-
-
-        if (updateInfo.updateField !== undefined) {
-          if (updateInfo.updateField.length > 0) {
-            issue.updateInfo.push(updateInfo);
-          }
-
         }
 
         issue.save(function(err, issue) {
@@ -430,6 +415,28 @@ module.exports.issuesUpdateOne = function(req, res) {
       });
 };
 
+//PUT /issues/:issueid/updateinfo - Adding a new update info entry
+module.exports.addUpdateInfo = async (req, res) => {
+
+  try {
+
+    if(!req.body) {
+      throw "UpdateInfo is empty";
+    }
+
+    let issue = await Iss.findById(req.params.issueid).exec();
+
+    issue.updateInfo.push(req.body);
+
+    let savedIssue = await issue.save();
+
+    utils.sendJSONresponse(res, 200, req.body);
+
+  } catch(err) {
+    utils.sendJSONresponse(res, 500, err);
+  }
+};
+
 // DELETE /issues/:issueid - Delte an issue by id
 module.exports.issuesDeleteOne = function(req, res) {
   var issueid = req.params.issueid;
@@ -456,6 +463,37 @@ module.exports.issuesDeleteOne = function(req, res) {
       "message": "No issueid"
     });
   }
+};
+
+//PUT /issues/:issueid/plan/:planid
+module.exports.updateFinalPlan = async (req, res) => {
+
+  let planId = req.params.planid;
+
+  if (utils.checkParams(req, res, ['issueid', 'planid'])) {
+    return;
+  }
+
+  try {
+    let issue = await Iss.findById(req.params.issueid).exec();
+
+    let index = issue.finalPlan.indexOf(issue.finalPlan.id(planId));
+    let plan = req.body;
+
+    if(index === -1) {
+      throw "No final Plan found";
+    }
+
+    issue.finalPlan.set(index, plan);
+
+    const savedIssue = await issue.save();
+
+    utils.sendJSONresponse(res, 200, savedIssue);
+
+  } catch(err) {
+    utils.sendJSONresponse(res, 500, err);
+  }
+
 };
 
 //////////////////////// HELPER FUNCTIONS ////////////////////////////
