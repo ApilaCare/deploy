@@ -47,7 +47,7 @@ module.exports.residentsList = async (req, res) => {
 
   try {
 
-    let fields = '_id firstName lastName aliasName carePoints';
+    let fields = '_id firstName lastName aliasName carePoints birthDate';
 
     let residents = await Resid.find({'community': community})
                           .select(fields).sort({'carePoints': -1}).exec();
@@ -69,7 +69,7 @@ module.exports.residentsFullList = async (req, res) => {
   }
 
   try {
-    let residents = await Resid.find({'community': community}).exec();
+    let residents = await Resid.find({'community': community}).populate("submitBy", "_id name").exec();
 
     utils.sendJSONresponse(res, 200, residents);
   } catch(err) {
@@ -213,10 +213,12 @@ module.exports.residentById = async (req, res) => {
     let resident  = await Resid
                           .findById(req.params.residentid)
                           .populate('updateInfo.updateBy', 'email name userImage')
+                          .populate('submitBy', 'name _id')
                           .exec();
 
     utils.sendJSONresponse(res, 200, resident);
   } catch(err) {
+    console.log(err);
     utils.sendJSONresponse(res, 500, err);
   }
 };
@@ -325,6 +327,8 @@ module.exports.residentsUpdateOne = function(req, res) {
     "ipAddress" : req.headers['x-forwarded-for'] || req.connection.remoteAddress
   };
 
+  console.log(req.body.insideApartment);
+
   console.log(req.body.updateField);
 
   if(req.body.updateField) {
@@ -332,7 +336,6 @@ module.exports.residentsUpdateOne = function(req, res) {
   }
 
   var isValidData = true;
-
 
   if (isValidData === false) {
     utils.sendJSONresponse(res, 404, err);
@@ -427,31 +430,22 @@ module.exports.uploadOutsideAgencyAssesment = function(req, res) {
 };
 
 // DELETE /api/residents/:residentid - delete a resident by id
-module.exports.residentsDeleteOne = function(req, res) {
-  var residentid = req.params.residentid;
+module.exports.residentsDeleteOne = async (req, res) => {
+  const residentid = req.params.residentid;
 
   if (utils.checkParams(req, res, ['residentid'])) {
     return;
   }
 
-  if (residentid) {
-    Resid
-      .findByIdAndRemove(residentid)
-      .exec(
-        function(err, resident) {
-          if (err) {
-            console.log(err);
-            utils.sendJSONresponse(res, 404, err);
-            return;
-          }
-          utils.sendJSONresponse(res, 204, null);
-        }
-      );
-  } else {
-    utils.sendJSONresponse(res, 404, {
-      "message": "No residentid"
-    });
+  try {
+    const deletedResident = Resid.findByIdAndRemove(residentid).exec();
+
+    utils.sendJSONresponse(res, 204, null);
+
+  } catch(err) {
+    utils.sendJSONresponse(res, 404, err);
   }
+
 };
 
 
