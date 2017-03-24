@@ -7,7 +7,7 @@ var moment = require('moment');
 var _ = require('lodash');
 var fs = require('fs');
 var imageUploadService = require('../../services/imageUpload');
-const activitiesService = require('../../services/activities.service');
+const activitiesService = require('../../services/activities');
 const carePoints = require('./care_points');
 const sanitize = require("sanitize-filename");
 
@@ -69,7 +69,8 @@ module.exports.residentsFullList = async (req, res) => {
   }
 
   try {
-    let residents = await Resid.find({'community': community}).populate("submitBy", "_id name").exec();
+    let residents = await Resid.find({'community': community})
+                    .populate("submitBy", "_id name").sort({'carePoints': -1}).exec();
 
     utils.sendJSONresponse(res, 200, residents);
   } catch(err) {

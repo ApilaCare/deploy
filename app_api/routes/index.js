@@ -8,6 +8,14 @@ require('../controllers/issues/schedule');
 var multiparty = require('connect-multiparty');
 var multipartyMiddleware = multiparty({uploadDir: "./"});
 
+const authorization = require('../services/authorization');
+
+const onlyBoss = authorization({ boss: true });
+
+const onlyDirector = authorization({ director: true });
+
+const sameCommunity = authorization({ community: true });
+
 var auth = jwt({
     // set secret using same environment variable as before
     secret: process.env.JWT_SECRET,
@@ -61,27 +69,28 @@ const ctrlLogs = require('../controllers/communities/logs');
 router.get('/communities/', sanitizeInput, auth, ctrlCommunities.communitiesList);
 router.get('/communities/canceled/:userid', sanitizeInput , auth, ctrlCommunities.hasCanceledCommunity);
 router.post('/communities/new', ctrlCommunities.communitiesCreate);
-router.post('/communities/:communityid/role/:userid', sanitizeInput , auth, ctrlCommunities.addRole);
-router.post('/communities/:communityid/restore/:userid', sanitizeInput , auth, ctrlCommunities.restoreCommunity);
-router.post('/communities/:communityid/roomstyle', sanitizeInput, auth, ctrlCommunities.createRoomStyle);
-router.post('/communities/:communityid/floor', sanitizeInput, auth, ctrlCommunities.addFloor);
-router.put('/communities/accept/:communityid/', sanitizeInput , auth, ctrlCommunities.acceptMember);
-router.put('/communities/:communityid/floor', sanitizeInput, auth, ctrlCommunities.updateFloor);
-router.put('/communities/decline/:communityid/', sanitizeInput , auth, ctrlCommunities.declineMember);
-router.put('/communities/pending/:communityid/', sanitizeInput , auth, ctrlCommunities.addPendingMember);
-router.put('/communities/:communityid/roomstyle/:roomid', sanitizeInput, auth, ctrlCommunities.updateRoomStyle);
-router.put('/communities/:communityid/contactinfo', sanitizeInput, auth, ctrlCommunities.updateContactAndRoomInfo);
-router.put('/communities/update/:communityid/', sanitizeInput , auth, ctrlCommunities.communitiesUpdateOne);
-router.delete('/communities/:communityid/roomstyle/:roomid', sanitizeInput, auth, ctrlCommunities.deleteRoomStyle);
-router.delete('/communities/:communityid/user/:userid/', sanitizeInput , auth, ctrlCommunities.removeMember);
-router.delete('/communities/:communityid/', sanitizeInput , auth, ctrlCommunities.communitiesDeleteOne);
+router.post('/communities/:communityid/role/:userid', sanitizeInput , auth, sameCommunity, ctrlCommunities.addRole);
+router.post('/communities/:communityid/restore/:userid', sanitizeInput , auth, sameCommunity, ctrlCommunities.restoreCommunity);
+router.post('/communities/:communityid/roomstyle', sanitizeInput, auth, sameCommunity, ctrlCommunities.createRoomStyle);
+router.post('/communities/:communityid/floor', sanitizeInput, auth, sameCommunity, ctrlCommunities.addFloor);
+router.put('/communities/accept/:communityid/', sanitizeInput , auth, sameCommunity, ctrlCommunities.acceptMember);
+router.put('/communities/:communityid/floor', sanitizeInput, auth, sameCommunity, ctrlCommunities.updateFloor);
+router.put('/communities/decline/:communityid/', sanitizeInput , auth, sameCommunity, ctrlCommunities.declineMember);
+router.put('/communities/pending/:communityid/', sanitizeInput , auth, sameCommunity, ctrlCommunities.addPendingMember);
+router.put('/communities/:communityid/roomstyle/:roomid', sanitizeInput, auth, sameCommunity, ctrlCommunities.updateRoomStyle);
+router.put('/communities/:communityid/contactinfo', sanitizeInput, auth, sameCommunity, ctrlCommunities.updateContactAndRoomInfo);
+router.put('/communities/update/:communityid/', sanitizeInput , auth, sameCommunity, ctrlCommunities.communitiesUpdateOne);
+router.put('/communities/:communityid/units', sanitizeInput , auth, sameCommunity, ctrlCommunities.updateUnits);
+router.delete('/communities/:communityid/roomstyle/:roomid', sanitizeInput, auth, sameCommunity, ctrlCommunities.deleteRoomStyle);
+router.delete('/communities/:communityid/user/:userid/', sanitizeInput , auth, sameCommunity, ctrlCommunities.removeMember);
+router.delete('/communities/:communityid/', sanitizeInput , auth, sameCommunity, ctrlCommunities.communitiesDeleteOne);
 
 // issues
-router.get('/issues/list/:status/id/:communityid', sanitizeInput , auth, ctrlIssues.issuesList);
-router.get('/issues/:username/s/:status/id/:communityid', sanitizeInput , auth, ctrlIssues.issuesListByStatus);
-router.get('/issues/count/:userid/id/:communityid', sanitizeInput , auth, ctrlIssues.issuesOpenCount);
-router.get('/issues/issuescount/:communityid', sanitizeInput , auth, ctrlIssues.issuesCount);
-router.get('/issues/due/:communityid', sanitizeInput , auth, ctrlIssues.dueIssuesList);
+router.get('/issues/list/:status/id/:communityid', sanitizeInput , auth, sameCommunity, ctrlIssues.issuesList);
+router.get('/issues/:username/s/:status/id/:communityid', sanitizeInput , auth, sameCommunity, ctrlIssues.issuesListByStatus);
+router.get('/issues/count/:userid/id/:communityid', sanitizeInput , auth, sameCommunity, ctrlIssues.issuesOpenCount);
+router.get('/issues/issuescount/:communityid', sanitizeInput , auth, sameCommunity, ctrlIssues.issuesCount);
+router.get('/issues/due/:communityid', sanitizeInput , auth, sameCommunity, ctrlIssues.dueIssuesList);
 router.get('/issues/:issueid', sanitizeInput , auth, ctrlIssues.issuesReadOne);
 router.get('/issues/:issueid/populate', sanitizeInput, auth, ctrlIssues.issuesPopulateOne);
 router.get('/issues/:issueid/updateinfo', sanitizeInput, auth, ctrlIssues.issueUpdateInfo);
@@ -104,11 +113,11 @@ router.put('/issues/:issueid/checklists/:checklistid', sanitizeInput , auth, ctr
 router.delete('/issues/:issueid/checklists/:checklistid', sanitizeInput , auth, ctrlIssueChecklists.issueChecklistsDeleteOne);
 
 // issue labels
-router.post('/issues/labels/:communityid', sanitizeInput, auth, ctrlIssueLabels.createLabel);
+router.post('/issues/labels/:communityid', sanitizeInput, auth, sameCommunity, ctrlIssueLabels.createLabel);
 router.post('/issues/:issueid/labels/:labelid', sanitizeInput , auth, ctrlIssueLabels.addLabelToCard);
-router.put('/issues/:communityid/labels/:labelname', sanitizeInput , auth, ctrlIssueLabels.updateLabel);
+router.put('/issues/:communityid/labels/:labelname', sanitizeInput , auth, sameCommunity, ctrlIssueLabels.updateLabel);
 router.delete('/issues/:issueid/labels/:labelname', sanitizeInput , auth, ctrlIssueLabels.removeLabelFromCard);
-router.delete('/community/:communityid/labels/:labelname', sanitizeInput , auth, ctrlIssueLabels.deleteLabel);
+router.delete('/community/:communityid/labels/:labelname', sanitizeInput , auth, sameCommunity, ctrlIssueLabels.deleteLabel);
 
 // issue attachments
 router.post('/issues/:issueid/attachments/new', sanitizeInput , auth, multipartyMiddleware, ctrlIssueAttachments.issueAttachmentsCreate);
@@ -116,12 +125,12 @@ router.put('/issues/:issueid/attachments/restore', sanitizeInput , auth, ctrlIss
 router.delete('/issues/:issueid/attachments/:attachmentid', sanitizeInput , auth, ctrlIssueAttachments.issueAttachmentsDeleteOne);
 
 // issues recovery
-router.post('/issues/recovery/:communityid', sanitizeInput , auth, ctrlIssueRecovery.createMemberRecovery);
+router.post('/issues/recovery/:communityid', sanitizeInput , auth, sameCommunity, ctrlIssueRecovery.createMemberRecovery);
 router.post('/issues/recovery/verify/:userid', sanitizeInput , auth, ctrlIssueRecovery.confirmPassword);
 
 // appointments
-router.get('/appointments/:communityid/month/:month', sanitizeInput , auth, ctrlAppointments.appointmentsList);
-router.get('/appointments/today/:communityid', sanitizeInput , auth,  ctrlAppointments.appointmentsToday);
+router.get('/appointments/:communityid/month/:month', sanitizeInput , auth, sameCommunity, ctrlAppointments.appointmentsList);
+router.get('/appointments/today/:communityid', sanitizeInput , auth,  sameCommunity, ctrlAppointments.appointmentsToday);
 router.post('/appointments/new', sanitizeInput , auth, ctrlAppointments.appointmentsCreate);
 router.put('/appointments/update/:appointmentid', sanitizeInput , auth, ctrlAppointments.appointmentsUpdateOne);
 router.delete('/appointments/:appointmentid', sanitizeInput , auth, ctrlAppointments.appointmentsDeleteOne);
@@ -169,18 +178,18 @@ router.get('/logs/:communityid', sanitizeInput, auth, ctrlLogs.listLogs);
 router.get('/user_logs/:communityid/user/:userid', sanitizeInput, auth, ctrlLogs.listUserLogs);
 
 // residents
-router.get('/residents/list/:communityid', sanitizeInput , auth, ctrlResidents.residentsList);
-router.get('/residents/full-list/:communityid', sanitizeInput, auth, ctrlResidents.residentsFullList);
-router.get('/residents/:residentid', sanitizeInput , auth, ctrlResidents.residentById);
-router.get('/residents/count/:communityid', sanitizeInput , auth, ctrlResidents.residentsCount);
-router.get('/residents/:communityid/locations', sanitizeInput , auth, ctrlResidents.getLocations);
-router.get('/residents/average_age/:communityid', sanitizeInput , auth, ctrlResidents.getAverageAge);
-router.get('/residents/average_stay/:communityid', sanitizeInput , auth, ctrlResidents.averageStayTime);
-router.post('/residents/new', sanitizeInput , auth, ctrlResidents.residentsCreate);
-router.post('/residents/:residentid/contact', sanitizeInput, auth, ctrlResidents.addContact);
-router.post('/residents/:residentid/upload', sanitizeInput, auth, multipartyMiddleware, ctrlResidents.uploadOutsideAgencyAssesment);
-router.put('/residents/update/:residentid', sanitizeInput , auth, ctrlResidents.residentsUpdateOne);
-router.put('/residents/:residentid/listitem', sanitizeInput , auth, ctrlResidents.updateListItem);
-router.delete('/residents/:residentid', sanitizeInput , auth, ctrlResidents.residentsDeleteOne);
+router.get('/residents/list/:communityid', sanitizeInput , auth, sameCommunity, ctrlResidents.residentsList);
+router.get('/residents/full-list/:communityid', sanitizeInput, auth, sameCommunity, ctrlResidents.residentsFullList);
+router.get('/residents/:residentid', sanitizeInput , auth, sameCommunity, ctrlResidents.residentById);
+router.get('/residents/count/:communityid', sanitizeInput , auth, sameCommunity, ctrlResidents.residentsCount);
+router.get('/residents/:communityid/locations', sanitizeInput , auth, sameCommunity, ctrlResidents.getLocations);
+router.get('/residents/average_age/:communityid', sanitizeInput , auth, sameCommunity, ctrlResidents.getAverageAge);
+router.get('/residents/average_stay/:communityid', sanitizeInput , auth, sameCommunity, ctrlResidents.averageStayTime);
+router.post('/residents/new', sanitizeInput , auth, sameCommunity, ctrlResidents.residentsCreate);
+router.post('/residents/:residentid/contact', sanitizeInput, auth, sameCommunity, ctrlResidents.addContact);
+router.post('/residents/:residentid/upload', sanitizeInput, auth, sameCommunity, multipartyMiddleware, ctrlResidents.uploadOutsideAgencyAssesment);
+router.put('/residents/update/:residentid', sanitizeInput , auth, sameCommunity, ctrlResidents.residentsUpdateOne);
+router.put('/residents/:residentid/listitem', sanitizeInput , auth, sameCommunity, ctrlResidents.updateListItem);
+router.delete('/residents/:residentid', sanitizeInput , auth, onlyBoss, ctrlResidents.residentsDeleteOne);
 
 module.exports = router;
