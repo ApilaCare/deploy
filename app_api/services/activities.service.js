@@ -23,18 +23,16 @@ module.exports = (socketConn) => {
       let community = client.community;
       let userid = client.userid;
 
-      console.log("Adding user: " + userid);
-
-      connectedUsers[userid] = socket;
+      connectedUsers[userid] = socket.id;
 
       if(community) {
         socket.join(community._id);
 
-        socket.on('get-activities', async (community, currUserid) => {
+        socket.on('get-activities', async (community) => {
 
           let activities = await activityCtrl.recentActivities(community._id);
 
-          let usersActivities = communityActivities(activities, currUserid);
+          let usersActivities = communityActivities(activities, userid);
 
           io.sockets.to(community._id).emit('recent-activities', usersActivities);
         });
@@ -64,26 +62,19 @@ module.exports = (socketConn) => {
 module.exports.acceptedMember = (data) => {
   let userId = data.id;
 
-  if(connectedUsers[userId]) {
-    connectedUsers[userId].emit('member-accepted', data);
-  }
+  let socketId = connectedUsers[userId];
 
-};
-
-//sends an update for community count
-module.exports.updateIssueCount = (userId, type) => {
-  let connectedUser = connectedUsers[userId];
-
-  console.log(userId);
-
-  if(connectedUser) {
-    connectedUser.emit('issue-count-update', type);
+  if(socketId) {
+    console.log("accepted member being send ");
+    io.sockets.socket(socketId).emit('member-accepted', data);
   }
 
 };
 
 //dynamicly adds activity to the db ands sends the new activity to everybody in that community
 module.exports.addActivity = async (text, userId, type, communityId, scope, respUser) => {
+
+  console.log(`CommunityId for activity: ${communityId}`);
 
   let responsibleUser = respUser || userId;
 
@@ -99,18 +90,8 @@ module.exports.addActivity = async (text, userId, type, communityId, scope, resp
 
   let populatedActivity = await activityCtrl.addActivity(activity);
 
-
   if(populatedActivity) {
-
-    // if the activity is specific for a user
-    if(activity.scope === "user") {
-      if(connectedUsers[userId]) {
-        connectedUsers[userId].emit("add-activity", populatedActivity);
-      }
-    } else {
-      io.sockets.to(communityId).emit("add-activity", populatedActivity);
-    }
-
+    io.sockets.to(communityId).emit("add-activity", populatedActivity);
   }
 
 };
@@ -124,8 +105,7 @@ function communityActivities(activities, userid) {
   _.forEach(activities, function(activity) {
     activity.scope = activity.scope || 'community';
 
-    // add if commuity wide our it's for the user that requested activities
-    if(activity.scope === 'community' || activity.userId._id.toString() === userid.toString()) {
+    if(activity.scope === 'community' || toString(activity.userId._id) === toString(userid)) {
 
       usersActivities.push(activity);
     }
