@@ -1,37 +1,65 @@
 
-var stripe = require('stripe')(process.env.STRIPE_KEY);
+const stripe = require('stripe')(process.env.STRIPE_KEY);
 
-var constants = require('./constants');
+const STANDARD_PLAN_ID = require('./constants').STANDARD_PLAN_ID;
+
+const PLAN_PER_USER = require('./constants').PLAN_PER_USER;
 
 //TODO: consistent callback params
 
-//save credit card info
-exports.saveCreditCard = function(stripeToken, email, callback) {
+exports.createPlan = async (amount, name, id) => {
 
-  stripe.customers.create({
+  const plan = {
+    amount: amount, 
+    interval: "month",
+    currency: "usd",
+    id: id,
+    name: name
+  };
+
+  try {
+    const planResp = await stripe.plans.create(plan);
+
+    return planResp;
+  } catch(err) {
+    console.log(err);
+
+  }
+}
+
+//save credit card info
+exports.saveCreditCard = async (stripeToken, email) =>  {
+
+  const data = {
     source: stripeToken,
     description: email
-  }).then(function(customer) {
-    callback(true, customer.id);
+  };
 
-  }).catch(function(customer) {
-    callback(false);
-  });
+  try {
+    const costumer = await stripe.customers.create(data);
+
+    return costumer;
+
+  } catch(err) {
+    console.log(err);
+  }
 
 };
 
-// retunts customer information by it's id
-exports.getCustomer = function(customer, callback) {
-  stripe.customers.retrieve(
-    customer,
-    function(err, customer) {
-      if(err) {
-        callback(false, customer);
-      } else {
-        callback(true, customer);
-      }
-    }
-  );
+// returns customer information by its id
+exports.getCustomer = async (customer) => {
+
+  try {
+
+    const cust = await stripe.customers.retrieve(customer);
+
+    return cust;
+
+  } catch(err) {
+    console.log(err);
+    return null;
+  }
+  
 };
 
 
@@ -51,24 +79,44 @@ exports.chargeUser = function(customerId, amount, callback) {
 };
 
 // gets customers stripe id and subscrips him to out standard plan
-exports.subscribeToPlan = function(customerid, callback) {
-  stripe.subscriptions.create({
+exports.subscribeToPlan = async (customerid) => {
+
+  const subscription = {
     customer: customerid,
-    plan: constants.STANDARD_PLAN_ID
-  }, function(err, subscription) {
-      if(err) {
-        callback(null);
-      } else {
-        callback(subscription);
-      }
-    }
-  );
+    plan: PLAN_PER_USER
+  };
+
+  try {
+    const sub = await stripe.subscriptions.create(subscription); 
+    return sub;
+
+  } catch(err) {
+    console.log(err);
+    return null;
+  }
+
+};
+
+exports.updateSubscription = async (subscriptionId, quantity) => {
+  
+  try {
+
+    const sub = await stripe.subscriptions.update(subscriptionId, {
+                                              quantity: quantity});
+
+    return sub;
+
+  } catch(err) {
+    console.log(err);
+    return null;
+  }
+
 };
 
 // returns standard plan information
 exports.getStandardPlan = function(callback) {
   stripe.plans.retrieve(
-    constants.STANDARD_PLAN_ID,
+    STANDARD_PLAN_ID,
     function(err, plan) {
       if(!err) {
         callback(plan);
