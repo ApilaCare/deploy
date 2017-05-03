@@ -30,9 +30,9 @@ app.use(cookieParser());
 
 var url = "";
 
-if(process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   url = "https://apila.care";
-} else if(process.env.NODE_ENV === 'staging') {
+} else if (process.env.NODE_ENV === 'staging') {
   url = "https://apila.us";
 }
 
