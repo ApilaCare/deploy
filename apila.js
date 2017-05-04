@@ -1,4 +1,9 @@
-//require('dotenv').load();
+var dotenv = require('dotenv');
+
+if(dotenv) {
+  dotenv.load();
+}
+
 var debug = require('debug')('Express4');
 var express = require('express');
 var app = express();
