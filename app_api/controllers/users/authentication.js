@@ -88,7 +88,11 @@ module.exports.login = function(req, res) {
 
 async function saveUser(user, todoid, res) {
 
-  let tokenVerify = generateToken(user.email);
+  console.log(utils.generateToken(user.email));
+
+  let tokenVerify = utils.generateToken(user.email);
+
+
 
   try {
 
