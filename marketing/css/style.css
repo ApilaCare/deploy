@@ -18,6 +18,29 @@ body {
     background-color: #fff;
 }
 
+.glyphicon { margin-right:10px; }
+.panel-body { padding:0px; }
+.panel-body table tr td {
+  padding-left: 5px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+.panel-body .table {margin-bottom: 0px; }
+
+
+.subMenuBlock {
+  width: 15%;
+  text-align: left;
+}
+
+.contentBlock {
+
+}
+
+.docSubMenuItem {
+    padding-left: 12px;
+}
+
 html {
     width: 100%;
     height: 100%;

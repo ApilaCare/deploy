@@ -67,163 +67,259 @@
     <!-- /.container -->
   </nav>
 
-  <!-- Section: Calendar -->
-  <section id="calendar" class="home-section text-center bg-gray">
-
-    <div class="heading-about">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-2">
-            <div class="wow bounceInDown" data-wow-delay="0.4s">
-              <div class="section-heading">
-                <h2>Features</h2>
-                <i class="fa fa-2x fa-angle-down"></i>
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-2 col-lg-offset-5">
-          <hr class="marginbot-50">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-3">
-          <div class="wow fadeInLeft" data-wow-delay="0.2s">
-            <div class="service-box">
-              <div class="service-icon">
-                <img src="img/icons/service-icon-1.png" alt="" />
-              </div>
-              <div class="service-desc">
-                <h5>Calendar</h5>
-                <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="wow fadeInUp" data-wow-delay="0.2s">
-            <div class="service-box">
-              <div class="service-icon">
-                <img src="img/icons/service-icon-2.png" alt="" />
-              </div>
-              <div class="service-desc">
-                <h5>Residents</h5>
-                <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="wow fadeInUp" data-wow-delay="0.2s">
-            <div class="service-box">
-              <div class="service-icon">
-                <img src="img/icons/issue-icon.png" alt="" />
-              </div>
-              <div class="service-desc">
-                <h5>Issues</h5>
-                <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="wow fadeInRight" data-wow-delay="0.2s">
-            <div class="service-box">
-              <div class="service-icon">
-                <img src="img/icons/service-icon-4.png" alt="" />
-              </div>
-              <div class="service-desc">
-                <h5>To-Dos</h5>
-                <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- /Section: Calendar -->
-
   <!-- Section: residents -->
   <section id="residents" class="home-section text-center bg-gray">
 
-    <div class="heading-about">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-2">
-            <div class="wow bounceInDown" data-wow-delay="0.4s">
-              <div class="section-heading">
-                <h2>Features</h2>
-                <i class="fa fa-2x fa-angle-down"></i>
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="container">
       <div class="row">
-        <div class="col-lg-2 col-lg-offset-5">
-          <hr class="marginbot-50">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-3">
-          <div class="wow fadeInLeft" data-wow-delay="0.2s">
-            <div class="service-box">
-              <div class="service-icon">
-                <img src="img/icons/service-icon-1.png" alt="" />
+        <div class="col-xs-4 col-sm-3">
+          <div class="panel-group subMenuBlock" id="accordion" data-spy="affix">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-calendar">
+                            </span>Calendar</a>
+                        </h4>
               </div>
-              <div class="service-desc">
-                <h5>Calendar</h5>
-                <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
+              <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <table class="table">
+                    <tr>
+                      <td>
+                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="http://www.jquery2dotnet.com">Articles</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class="glyphicon glyphicon-flash text-success"></span><a href="http://www.jquery2dotnet.com">News</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class="glyphicon glyphicon-file text-info"></span><a href="http://www.jquery2dotnet.com">Newsletters</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class="glyphicon glyphicon-comment text-success"></span><a href="http://www.jquery2dotnet.com">Comments</a>
+                        <span class="badge">42</span>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-user">
+                            </span>Residents</a>
+                        </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <table class="table">
+                    <tr>
+                      <td>
+                        <a href="#">Sections</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#" class="docSubMenuItem">Dependent Questions</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#">Orders</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#">Orders</a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-asterisk">
+                            </span>Issues</a>
+                        </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <table class="table">
+                    <tr>
+                      <td>
+                        <a href="#">Title</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#">Description</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#">Resolution Timeframe</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Status</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Responsible Party</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Wordcloud</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Due Date</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Export</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Confidential</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Members</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Checklists</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Labels</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Attachments</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Comments</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Plan</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Updates</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      <a href="#">Access Controls</a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-check">
+                            </span>To-Dos</a>
+                        </h4>
+              </div>
+              <div id="collapseFour" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <table class="table">
+                    <tr>
+                      <td>
+                        <span class="glyphicon glyphicon-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class="glyphicon glyphicon-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class="glyphicon glyphicon-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class="glyphicon glyphicon-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="wow fadeInUp" data-wow-delay="0.2s">
-            <div class="service-box">
-              <div class="service-icon">
-                <img src="img/icons/service-icon-2.png" alt="" />
-              </div>
-              <div class="service-desc">
-                <h5>Residents</h5>
-                <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="wow fadeInUp" data-wow-delay="0.2s">
-            <div class="service-box">
-              <div class="service-icon">
-                <img src="img/icons/issue-icon.png" alt="" />
-              </div>
-              <div class="service-desc">
-                <h5>Issues</h5>
-                <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="wow fadeInRight" data-wow-delay="0.2s">
-            <div class="service-box">
-              <div class="service-icon">
-                <img src="img/icons/service-icon-4.png" alt="" />
-              </div>
-              <div class="service-desc">
-                <h5>To-Dos</h5>
-                <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-              </div>
-            </div>
+        <div class="col-xs-8 col-sm-9">
+          <div class="contentBlock">
+            <h1>Accordion Menu With Icon wrapping text to see how it is Accordion Menu With Icon wrapping text to see how it isAccordion Menu With Icon wrapping text to see how it isAccordion Menu With Icon wrapping text to see how it is</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            <h1>Accordion Menu With Icon</h1>
+            Admin Dashboard Accordion Menu
+
           </div>
         </div>
       </div>
