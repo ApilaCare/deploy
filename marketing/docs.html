@@ -77,32 +77,145 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-calendar">
-                            </span>Calendar</a>
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero"><span class="glyphicon glyphicon-calendar">
+                            </span>Dashboard</a>
                         </h4>
               </div>
-              <div id="collapseOne" class="panel-collapse collapse in">
+              <div id="collapseZero" class="panel-collapse collapse in">
                 <div class="panel-body">
                   <table class="table">
                     <tr>
                       <td>
-                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="http://www.jquery2dotnet.com">Articles</a>
+                        <a href="#dashboardJoin">Joining a Community</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <span class="glyphicon glyphicon-flash text-success"></span><a href="http://www.jquery2dotnet.com">News</a>
+                        <a href="#dashboardCreate">Creating a Community</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <span class="glyphicon glyphicon-file text-info"></span><a href="http://www.jquery2dotnet.com">Newsletters</a>
+                        <a href="#dashboardSummary">Community Summary</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <span class="glyphicon glyphicon-comment text-success"></span><a href="http://www.jquery2dotnet.com">Comments</a>
-                        <span class="badge">42</span>
+                        <a href="#dashboardSummaryAppointments" class="docSubMenuItem">Appointments Today</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardSummaryResidents" class="docSubMenuItem">Residents in the Building</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardSummaryIssues" class="docSubMenuItem">Open Issues</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardMembers">Community Members</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardPending">Pending Members</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardSettings">Community Settings</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardSettingsBilling" class="docSubMenuItem">Billing Information</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardSettingsBasic" class="docSubMenuItem">Basic Information</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardSettingsRoom" class="docSubMenuItem">Room Setup</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardSettingsUnits" class="docSubMenuItem">Units</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardTime">Weather and Time</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardActivity">Activity</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#dashboardChat">Chat</a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-calendar">
+                            </span>Calendar</a>
+                        </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <table class="table">
+                    <tr>
+                      <td>
+                        <a href="#calendarViews">Views</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#calendarDueDates">Issue Due Dates</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#calendarBirthdays">Resident Birthdays</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#calendarAppointments">Appointments</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#calendarAppointmentsList" class="docSubMenuItem">List Export</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#calendarAppointmentsDetail" class="docSubMenuItem">Detail Export</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#calendarAppointmentsMap" class="docSubMenuItem">Map</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#calendarAppointmentsCancel" class="docSubMenuItem">Canceled</a>
                       </td>
                     </tr>
                   </table>
@@ -121,22 +234,122 @@
                   <table class="table">
                     <tr>
                       <td>
-                        <a href="#">Sections</a>
+                        <a href="#residentSections">Sections</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <a href="#" class="docSubMenuItem">Dependent Questions</a>
+                        <a href="#residentSectionsDependent" class="docSubMenuItem">Dependent Questions</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <a href="#">Orders</a>
+                        <a href="#residentSectionsAdministrative" class="docSubMenuItem">Administrative</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <a href="#">Orders</a>
+                        <a href="#residentSectionsAllergy" class="docSubMenuItem">Allergy</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsAssist" class="docSubMenuItem">Assistance</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsBath" class="docSubMenuItem">Bathing</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsIncontinent" class="docSubMenuItem">Incontinent</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsLife" class="docSubMenuItem">Life</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsMobility" class="docSubMenuItem">Mobility</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsNutrition" class="docSubMenuItem">Nutrition</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsPain" class="docSubMenuItem">Pain</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsPhysical" class="docSubMenuItem">Physical Condition</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsPsycho" class="docSubMenuItem">Psychosocial</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsSleep" class="docSubMenuItem">Sleep</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsVitals" class="docSubMenuItem">Vitals</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsContacts" class="docSubMenuItem">Contacts</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSectionsUpdates" class="docSubMenuItem">Updates</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentSearch">Search</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentExports">Exports</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentExportsBlank" class="docSubMenuItem">Blank Care Plan</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentExportsCarePlan" class="docSubMenuItem">Care Plan</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentExportsCensus" class="docSubMenuItem">Census Sheet</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentExportsFace" class="docSubMenuItem">Face Sheet</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#residentExportCurrent" class="docSubMenuItem">Current Search</a>
                       </td>
                     </tr>
                   </table>
@@ -155,87 +368,87 @@
                   <table class="table">
                     <tr>
                       <td>
-                        <a href="#">Title</a>
+                        <a href="#issuesTitle">Title</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <a href="#">Description</a>
+                        <a href="#issuesDescription">Description</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <a href="#">Resolution Timeframe</a>
+                        <a href="#issuesTimeframe">Resolution Timeframe</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Status</a>
+                      <a href="#issuesStatus">Status</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Responsible Party</a>
+                      <a href="#issuesParty">Responsible Party</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Wordcloud</a>
+                      <a href="#issuesWordcloud">Wordcloud</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Due Date</a>
+                      <a href="#issuesDueDate">Due Date</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Export</a>
+                      <a href="#issuesExport">Export</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Confidential</a>
+                      <a href="#issuesConfidential">Confidential</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Members</a>
+                      <a href="#issuesMembers">Members</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Checklists</a>
+                      <a href="#issuesChecklist">Checklists</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Labels</a>
+                      <a href="#issuesLabels">Labels</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Attachments</a>
+                      <a href="#issuesAttachments">Attachments</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Comments</a>
+                      <a href="#issuesComments">Comments</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Plan</a>
+                      <a href="#issuesPlan">Plan</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Updates</a>
+                      <a href="#issuesUpdates">Updates</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <a href="#">Access Controls</a>
+                      <a href="#issuesControls">Access Controls</a>
                       </td>
                     </tr>
                   </table>
@@ -254,22 +467,67 @@
                   <table class="table">
                     <tr>
                       <td>
-                        <span class="glyphicon glyphicon-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
+                        <a href="#todoCreate">Creating a To-Do</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <span class="glyphicon glyphicon-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
+                        <a href="#todoOccurrence">Occurrence</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <span class="glyphicon glyphicon-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
+                        <a href="#todoOccurrenceHourly" class="docSubMenuItem">Hourly</a>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <span class="glyphicon glyphicon-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
+                        <a href="#todoOccurrenceDaily" class="docSubMenuItem">Daily</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#todoOccurrenceWeekly" class="docSubMenuItem">Weekly</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#todoOccurrenceMonthly" class="docSubMenuItem">Monthly</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#todoInterval">Availability Interval</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#todoIntervalHourly" class="docSubMenuItem">Hourly</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#todoIntervalDaily" class="docSubMenuItem">Daily</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#todoIntervalWeekly" class="docSubMenuItem">Weekly</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#todoIntervalMonthly" class="docSubMenuItem">Monthly</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#todoWithIssues">Tie with Issues</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="#todoDelete">Deleting a To-Do</a>
                       </td>
                     </tr>
                   </table>
@@ -280,6 +538,8 @@
         </div>
         <div class="col-xs-8 col-sm-9">
           <div class="contentBlock">
+            <section id="intro">
+            </section>
             <h1>Accordion Menu With Icon wrapping text to see how it is Accordion Menu With Icon wrapping text to see how it isAccordion Menu With Icon wrapping text to see how it isAccordion Menu With Icon wrapping text to see how it is</h1>
             <h1>Accordion Menu With Icon</h1>
             <h1>Accordion Menu With Icon</h1>
@@ -304,6 +564,73 @@
             <h1>Accordion Menu With Icon</h1>
             <h1>Accordion Menu With Icon</h1>
             <h1>Accordion Menu With Icon</h1>
+            <section id="dashboardJoin" class="home-section">
+              <h2>Dashboard - Joining a Community</h2>
+            </section>
+
+            <section id="dashboardCreate" class="home-section">
+              <h2>Dashboard - Creating a Community</h2>
+            </section>
+
+            <section id="dashboardSummary" class="home-section">
+              <h2>Dashboard - Community Summary</h2>
+            </section>
+
+            <section id="dashboardSummaryAppointments" class="subhome-section">
+              <h3>Appointments Today</h3>
+            </section>
+
+            <section id="dashboardSummaryResidents" class="subhome-section">
+              <h3>Residents in the Building</h3>
+            </section>
+
+            <section id="dashboardSummaryIssues" class="subhome-section">
+              <h3>Open Issues</h3>
+            </section>
+
+            <section id="dashboardMembers" class="home-section">
+              <h2>Dashboard - Community Members</h2>
+            </section>
+
+            <section id="dashboardPending" class="home-section">
+              <h2>Dashboard - Pending Members</h2>
+            </section>
+
+            <section id="dashboardSettings" class="home-section">
+              <h2>Dashboard - Community Settings</h2>
+            </section>
+
+            <section id="dashboardSettingsBilling" class="subhome-section">
+              <h3>Billing Information</h3>
+            </section>
+
+            <section id="dashboardSettingsBasic" class="subhome-section">
+              <h3>Basic Information</h3>
+            </section>
+
+            <section id="dashboardSettingsRoom" class="subhome-section">
+              <h3>Room Setup</h3>
+            </section>
+
+            <section id="dashboardSettingsUnits" class="subhome-section">
+              <h3>Units</h3>
+            </section>
+
+            <section id="dashboardTime" class="home-section">
+              <h2>Dashboard - Time and Weather</h2>
+            </section>
+
+            <section id="dashboardActivity" class="home-section">
+              <h2>Dashboard - Activity</h2>
+            </section>
+
+            <section id="dashboardChat" class="home-section">
+              <h2>Dashboard - Chat</h2>
+            </section>
+
+            <section id="issueLabels" class="home-section">
+              <h2>Issue - Labels</h2>
+            </section>
             <h1>Accordion Menu With Icon</h1>
             <h1>Accordion Menu With Icon</h1>
             <h1>Accordion Menu With Icon</h1>
