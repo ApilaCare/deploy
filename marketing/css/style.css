@@ -103,7 +103,7 @@ a:hover, a:focus {
 }
 
 .navbar-brand h1 {
-  color: #fff;
+  color: #1976D2;
   text-shadow: 1px 1px #616161;
   font-size: 36px;
   line-height: 40px;
@@ -383,7 +383,7 @@ hr {
 }
 
 .intro .slogan h2 {
-  color: #FAFAFA;
+  color: #1976D2;
   text-shadow: 2px 2px #616161;
   font-size: 120px;
   line-height: 60px;
@@ -397,7 +397,7 @@ hr {
 
 .intro .slogan h4 {
   font-size: 40px;
-  color: #FAFAFA;
+  color: #1976D2;
   text-shadow: 2px 2px #616161;
 }
 
