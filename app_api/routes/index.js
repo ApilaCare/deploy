@@ -72,6 +72,7 @@ router.post('/communities/:communityid/role/:userid', sanitizeInput , auth, ctrl
 router.post('/communities/:communityid/restore/:userid', sanitizeInput , auth, ctrlCommunities.restoreCommunity);
 router.post('/communities/:communityid/roomstyle', sanitizeInput, auth, ctrlCommunities.createRoomStyle);
 router.post('/communities/:communityid/floor', sanitizeInput, auth, ctrlCommunities.addFloor);
+router.post('/communities/:communityid/logo', sanitizeInput , auth, multipartyMiddleware, ctrlCommunities.uploadLogo);
 router.put('/communities/accept/:communityid/', sanitizeInput , auth, ctrlCommunities.acceptMember);
 router.put('/communities/:communityid/floor', sanitizeInput, auth, ctrlCommunities.updateFloor);
 router.put('/communities/decline/:communityid/', sanitizeInput , auth, ctrlCommunities.declineMember);
@@ -130,6 +131,7 @@ router.post('/issues/recovery/verify/:userid', sanitizeInput , auth, ctrlIssueRe
 // appointments
 router.get('/appointments/:communityid/month/:month', sanitizeInput , auth, ctrlAppointments.appointmentsList);
 router.get('/appointments/today/:communityid', sanitizeInput , auth, ctrlAppointments.appointmentsToday);
+router.get('/appointments/locations/:communityid', sanitizeInput, auth, ctrlAppointments.appointmentsLocations);
 router.post('/appointments/new', sanitizeInput , auth, ctrlAppointments.appointmentsCreate);
 router.put('/appointments/update/:appointmentid', sanitizeInput , auth, ctrlAppointments.appointmentsUpdateOne);
 router.delete('/appointments/:appointmentid', sanitizeInput , auth, ctrlAppointments.appointmentsDeleteOne);

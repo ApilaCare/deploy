@@ -193,46 +193,44 @@ module.exports.resetPassword = function(req, res) {
     });
 };
 
-module.exports.uploadImage = function(req, res) {
+module.exports.uploadImage = async (req, res) => {
 
-  var file = req.files.file;
+  const file = req.files.file;
 
-  var stream = fs.createReadStream(file.path);
+  const stream = fs.createReadStream(file.path);
 
-  var params = {
-    Key: sanitize(file.originalFilename),
+  const community = req.body.community;
+  const filePath = `${community}/Users/Avatars/${sanitize(file.originalFilename)}`;
+
+  const params = {
+    Key: filePath,
     Body: stream
   };
 
-  imageUploadService.upload(params, file.path, function() {
+  try {
 
-    var fullUrl = "https://" + imageUploadService.getRegion() + ".amazonaws.com/" +
-      imageUploadService.getBucket() + "/" + escape(sanitize(file.originalFilename));
+    await imageUploadService.uploadFile(params, file.path);
+
+    const fullUrl = `https://${imageUploadService.getRegion()}.amazonaws.com/${imageUploadService.getBucket()}/${filePath}`;
 
     fs.unlinkSync(file.path);
 
-    User.findById(req.params.userid)
-      .exec(function(err, user) {
-        if (user) {
-          user.userImage = fullUrl;
-          user.save(function(err) {
-            if (err) {
-              utils.sendJSONresponse(res, 404, {
-                message: "Unable to save user"
-              });
-            } else {
-              utils.sendJSONresponse(res, 200, fullUrl);
-            }
-          });
-        } else {
-          utils.sendJSONresponse(res, 404, {
-            message: "Unable to find user"
-          });
-        }
-      });
+    const user = await User.findById(req.params.userid).exec();
 
+    //delete old image 
+    await imageUploadService.deleteFile(user.userImage);
 
-  });
+    user.userImage = fullUrl;
+
+    await user.save();
+
+    utils.sendJSONresponse(res, 200, fullUrl);
+
+  } catch(err) {
+    console.log(err);
+    utils.sendJSONresponse(res, 500, err);
+  }
+
 };
 
 module.exports.updateUsername = function(req, res) {
