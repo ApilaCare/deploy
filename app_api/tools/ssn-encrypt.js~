@@ -20,11 +20,9 @@ const asyncLib = require('async');
 
       asyncLib.each(residents, function(resident) {
 
-        if(resident.socialSecurityNumber) {
-            resident.socialSecurityNumber = cryptoHelper.encrypt(resident.socialSecurityNumber);
+        resident.socialSecurityNumber = cryptoHelper.encrypt(resident.socialSecurityNumber);
 
-            resident.save();
-        }
+         resident.save();
       });
 
       console.log("residents updated");
@@ -34,4 +32,3 @@ const asyncLib = require('async');
     }
   });
 })();
-
