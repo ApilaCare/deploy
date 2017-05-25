@@ -58,12 +58,23 @@ app.use('/files', express.static(__dirname + 'upload_storage'));
 
 app.use(express.static(path.join(__dirname, 'app_client')));
 
+
 app.use('/marketing', express.static(path.join(__dirname, '/marketing')));
 app.use('/front', express.static(path.join(__dirname, '/front')));
-app.use('/front', express.static(path.join(__dirname, '/front/assets/service')));
 
 app.get('*', function(req, res) {
-  res.sendfile((path.join(__dirname, 'app_client/index.html')));
+
+  if(req.url === '/static/js/main.cd60acc0.js') {
+    res.sendfile((path.join(__dirname, 'front/static/js/main.cd60acc0.js')));
+  } else if(req.url === '/static/css/main.f626de8a.css') {
+    res.sendfile((path.join(__dirname, 'front/static/css/main.f626de8a.css')));
+  } else if(req.url === '/static/js/main.cd60acc0.js.map') {
+    res.sendfile((path.join(__dirname, 'front/static/js/main.cd60acc0.js.map')));
+  } else if(req.url === '/static/css/main.f626de8a.css.map') {
+    res.sendfile((path.join(__dirname, 'front/static/css/main.f626de8a.css.map')));
+  } else {
+    res.sendfile((path.join(__dirname, 'app_client/index.html')));
+  }
 });
 
 app.set('port', process.env.PORT || 3300);
