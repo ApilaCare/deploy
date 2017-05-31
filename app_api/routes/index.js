@@ -30,8 +30,6 @@ var sanitizeInput = function(req, res, next) {
 
 // control variables
 
-var nodemailer = require('../services/email');
-
 // issues
 var ctrlIssues = require('../controllers/issues/issues');
 var ctrlIssueRecovery = require('../controllers/issues/issueRecovery');
@@ -95,6 +93,7 @@ router.get('/issues/:issueid', sanitizeInput , auth, ctrlIssues.issuesReadOne);
 router.get('/issues/:issueid/populate', sanitizeInput, auth, ctrlIssues.issuesPopulateOne);
 router.get('/issues/:issueid/updateinfo', sanitizeInput, auth, ctrlIssues.issueUpdateInfo);
 router.post('/issues/new', sanitizeInput , auth, ctrlIssues.issuesCreate);
+router.post('/issues/:issueid/member_notification', sanitizeInput, auth, ctrlIssues.sendMemberNotification);
 router.put('/issues/:issueid', sanitizeInput , auth, ctrlIssues.issuesUpdateOne);
 router.put('/issues/:issueid/updateinfo', sanitizeInput, auth, ctrlIssues.addUpdateInfo);
 router.put('/issues/:issueid/finalplan', sanitizeInput, auth, ctrlIssues.addFinalPlan);
@@ -188,6 +187,7 @@ router.get('/residents/average_age/:communityid', sanitizeInput , auth,  ctrlRes
 router.get('/residents/average_stay/:communityid', sanitizeInput , auth, ctrlResidents.averageStayTime);
 router.post('/residents/new', sanitizeInput , auth, ctrlResidents.residentsCreate);
 router.post('/residents/:residentid/contact', sanitizeInput, auth, ctrlResidents.addContact);
+router.post('/residents/:residentid/image', sanitizeInput, auth, multipartyMiddleware, ctrlResidents.uploadResidentImage);
 router.post('/residents/:residentid/upload', sanitizeInput, auth, multipartyMiddleware, ctrlResidents.uploadOutsideAgencyAssesment);
 router.put('/residents/update/:residentid', sanitizeInput , auth,  ctrlResidents.residentsUpdateOne);
 router.put('/residents/:residentid/listitem', sanitizeInput , auth, ctrlResidents.updateListItem);

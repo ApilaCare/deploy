@@ -1,12 +1,15 @@
-var mongoose = require('mongoose');
-var Iss = mongoose.model('Issue');
-var User = mongoose.model('User');
-var utils = require('../../services/utils');
+const mongoose = require('mongoose');
+const Iss = mongoose.model('Issue');
+const User = mongoose.model('User');
+const utils = require('../../services/utils');
 const activitiesService = require('../../services/activities');
 const ToDo = mongoose.model('ToDo');
 
 const Labels = mongoose.model('Labels');
 
+const APILA_EMAIL = require('../../services/constants').APILA_EMAIL;
+
+const sendIssueMemberEmail = require('../../services/emails/emailControllers/issueMember').sendIssueMemberEmail;
 
 // POST /issues/new - Creates a new issue
 module.exports.issuesCreate = function(req, res) {
@@ -338,6 +341,34 @@ module.exports.issuesReadOne = function(req, res) {
       "message": "No issueid in request"
     });
   }
+};
+
+//POST issues/:issueid/member_notification - Send email notification when the user is added to the issue
+module.exports.sendMemberNotification = async (req, res) => {
+
+  if (utils.checkParams(req, res, ['issueid'])) {
+    return;
+  }
+
+  try {
+
+    const issue = req.body.issue;
+
+    const memberEmail = req.body.memberEmail;
+    const memberName = req.body.memberName;
+    const memberId = req.body.memberId;
+
+    const issuesOfMember = await Iss.find({idMembers: new mongoose.Types.ObjectId(memberId)}).exec();
+
+    await sendIssueMemberEmail(APILA_EMAIL, memberEmail, issue, memberName, issuesOfMember);
+
+    utils.sendJSONresponse(res, 200, true);
+
+  } catch(err) {
+    console.log(err);
+    utils.sendJSONresponse(res, 500, err);
+  }
+
 };
 
 // PUT issues/:issueid - Updates issue by its id
