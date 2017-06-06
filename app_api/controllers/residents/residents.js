@@ -220,23 +220,13 @@ module.exports.residentById = async (req, res) => {
                           .exec();
 
     if(resident.socialSecurityNumber) {
-       let ssn = cryptoHelper.decrypt(resident.socialSecurityNumber);
-
-      //if we are boss or director show full ssn
-      const userid = req.payload._id;
-
-      const isDirector = resident.community.directors.indexOf(userid) !== -1;
-
-      if(userid === resident.community.boss.toString() || isDirector) {
-        resident.socialSecurityNumber = ssn;
+      if(resident.community) {
+        getSSNByRole(req, resident);
       } else {
-        resident.socialSecurityNumber = ssn.substr(ssn.length - 4);
+        resident.socialSecurityNumber = cryptoHelper.decrypt(resident.socialSecurityNumber);
       }
-
-      //remove community 
-      resident.community = {};
-    }
-   
+    } 
+    
 
     utils.sendJSONresponse(res, 200, resident);
   } catch(err) {
@@ -530,6 +520,24 @@ function addToArray(arr, value) {
     });
   }
 
+}
+
+//get and decrypt the SSN number by the users current role (boss and director get full SSN)
+function getSSNByRole(req, resident) {
+    let ssn = cryptoHelper.decrypt(resident.socialSecurityNumber);
+
+    //if we are boss or director show full ssn
+    const userid = req.payload._id;
+
+    const isDirector = resident.community.directors.indexOf(userid) !== -1;
+
+    if(userid === resident.community.boss.toString() || isDirector) {
+      resident.socialSecurityNumber = ssn;
+    } else {
+      resident.socialSecurityNumber = ssn.substr(ssn.length - 4);
+    }
+
+    return resident;
 }
 
 
