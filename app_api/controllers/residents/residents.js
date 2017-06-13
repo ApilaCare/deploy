@@ -219,6 +219,8 @@ module.exports.residentById = async (req, res) => {
                           .populate('community')
                           .exec();
 
+    console.log(resident.socialSecurityNumber);
+
     if(resident.socialSecurityNumber) {
       if(resident.community) {
         getSSNByRole(req, resident);
