@@ -43,7 +43,10 @@ module.exports.listTasks = async (req, res) => {
 
   try {
 
-    const todo = await ToDo.findById(todoId).exec();
+    const todo = await ToDo.findById(todoId)
+                       .populate("tasks.responsibleParty", "_id name")
+                       .populate("tasks.submitBy", "_id name")
+                       .exec();
 
     //before listing tasks check if any tasks are completed
     await TaskService.updateTasks(todo);
@@ -67,6 +70,9 @@ module.exports.addTask = async (req, res) => {
   }
 
   try {
+
+    const userId = req.payload._id;
+
     const newTask = {
       text: req.body.text,
       occurrence: req.body.occurrence,
@@ -85,10 +91,23 @@ module.exports.addTask = async (req, res) => {
       startTime: req.body.startTime,
       endTime: req.body.endTime,
       weekStartTime: req.body.weekStartTime,
-      weekEndTime: req.body.weekEndTime
+      weekEndTime: req.body.weekEndTime,
+      submitBy: userId,
+      responsibleParty: req.body.responsibleParty
     };
 
-    const userId = req.payload._id;
+    // Adding the task to the responsible party todo
+    if(userId !== req.body.responsibleParty) {
+
+      if(req.body.responsibleTodoid) {
+        const responsibleTodo = await ToDo.findById(req.body.responsibleTodoid).exec();
+
+        responsibleTodo.tasks.push(newTask);
+
+        await responsibleTodo.save();
+      }
+
+    }
 
     const todo = await ToDo.findById(todoId).exec();
     
@@ -150,6 +169,15 @@ module.exports.updateTask = async (req, res) => {
     todo.tasks.set(index, task);
 
     await todo.save();
+
+    //responsible party has been changed
+    if(req.body.oldResponsibleTodoid) {
+      //remove the task from oldResponsibleParty
+      //await removeTaskForResponsibleParty(req.body.oldResponsibleTodoid);
+
+      //add the task to newResponsibleParty
+      await addTaskForResponsibleParty(req.body.responsibleTodoid, task);
+    }
 
     utils.sendJSONresponse(res, 200, todo.tasks[todo.tasks.length - 1]);
 
@@ -223,6 +251,28 @@ module.exports.activeTasksCount = async (req, res) => {
 
 
 //////////////////////////// HELPER FUNCTION /////////////////////////////////
+
+async function addTaskForResponsibleParty(responsibleid, task) {
+   if(responsibleid) {
+      const responsibleTodo = await ToDo.findById(responsibleid).exec();
+
+      responsibleTodo.tasks.push(task);
+
+      return await responsibleTodo.save();
+    }
+}
+
+async function removeTaskForResponsibleParty(responsibleid) {
+   if(responsibleid) {
+      const responsibleTodo = await ToDo.findById(responsibleid).exec();
+
+      // const task = responsibleTodo.tasks.id(taskId);
+
+      // task.remove();
+
+      return await responsibleTodo.save();
+    }
+}
 
 function resetOtherOccurrences(task) {
   switch(task.occurrence) {

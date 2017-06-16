@@ -219,16 +219,13 @@ module.exports.residentById = async (req, res) => {
                           .populate('community')
                           .exec();
 
-    console.log(resident.socialSecurityNumber);
-
     if(resident.socialSecurityNumber) {
       if(resident.community) {
         getSSNByRole(req, resident);
       } else {
         resident.socialSecurityNumber = cryptoHelper.decrypt(resident.socialSecurityNumber);
       }
-    } 
-    
+    }     
 
     utils.sendJSONresponse(res, 200, resident);
   } catch(err) {

@@ -57,6 +57,7 @@
         "COMPLETED": "Completed",
         "OVERDUE": "Overdue",
         "NOTCOMPLETED": "Not Completed",
+        "ASSIGNEDTASK": "Assigned Task",
         "REMOVE_TASK": "Remove task",
         "ERRORS": {
             "TITLE_REQUIRED": "Title field is required"
