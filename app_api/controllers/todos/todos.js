@@ -96,18 +96,6 @@ module.exports.addTask = async (req, res) => {
       responsibleParty: req.body.responsibleParty
     };
 
-    // Adding the task to the responsible party todo
-    if(userId !== req.body.responsibleParty) {
-
-      if(req.body.responsibleTodoid) {
-        const responsibleTodo = await ToDo.findById(req.body.responsibleTodoid).exec();
-
-        responsibleTodo.tasks.push(newTask);
-
-        await responsibleTodo.save();
-      }
-
-    }
 
     const todo = await ToDo.findById(todoId).exec();
     
@@ -121,6 +109,19 @@ module.exports.addTask = async (req, res) => {
 
     activitiesService.addActivity(" created a task " + newTask.text,
                             userId, "task-create", req.body.communityId, "user");
+
+    // Adding the task to the responsible party todo
+    if(userId !== req.body.responsibleParty) {
+
+      if(req.body.responsibleTodoid) {
+        const responsibleTodo = await ToDo.findById(req.body.responsibleTodoid).exec();
+
+        responsibleTodo.tasks.push(todo.tasks[todo.tasks.length - 1]);
+
+        await responsibleTodo.save();
+      }
+
+    }
 
     utils.sendJSONresponse(res, 200, todo.tasks[todo.tasks.length - 1]);
 
@@ -145,41 +146,34 @@ module.exports.updateTask = async (req, res) => {
 
   try {
 
-    const currentTime = await TaskService.loadMockTime();
+    const updatedTask = await updateTask(req.body, todoId, taskId);
 
-    const todo = await ToDo.findById(todoId).exec();
-
-    const index = todo.tasks.indexOf(todo.tasks.id(taskId));
-    const task = req.body;
-
-    if(index === -1) {
-      throw "Task to update not found";
-    }
-
-    if(task.state === taskState.COMPLETE) {
-      task.cycleDate = currentTime.toDate();
-      task.completed.push({updatedOn: currentTime.toDate()});
-    }
-
-    // if we switched occurrence, reset other active set fields
-    if(todo.tasks[index].occurrence !== task.occurrence) {
-      resetOtherOccurrences(task);
-    }
-
-    todo.tasks.set(index, task);
-
-    await todo.save();
+    const userId = req.payload._id;
 
     //responsible party has been changed
     if(req.body.oldResponsibleTodoid) {
       //remove the task from oldResponsibleParty
-      //await removeTaskForResponsibleParty(req.body.oldResponsibleTodoid);
+      await removeTaskForResponsibleParty(task._id, req.body.oldResponsibleTodoid);
 
       //add the task to newResponsibleParty
       await addTaskForResponsibleParty(req.body.responsibleTodoid, task);
     }
 
-    utils.sendJSONresponse(res, 200, todo.tasks[todo.tasks.length - 1]);
+    //different responsibleParty? Update the other task as well
+
+    if(req.body.submitBy._id !== req.body.responsibleParty) {
+
+      let currtodoid = req.body.responsibleTodoid;
+
+      if(userId === req.body.responsibleParty) {
+        currtodoid = req.body.creatorsTodoid;
+      }
+
+
+      await updateTask(req.body, currtodoid, taskId);
+    }
+
+    utils.sendJSONresponse(res, 200, updatedTask);
 
   } catch(err) {
     console.log(err);
@@ -252,6 +246,42 @@ module.exports.activeTasksCount = async (req, res) => {
 
 //////////////////////////// HELPER FUNCTION /////////////////////////////////
 
+async function updateTask(updateTask, todoId, taskId) {
+  try {
+
+    const currentTime = await TaskService.loadMockTime();
+
+    const todo = await ToDo.findById(todoId).exec();
+
+    const index = todo.tasks.indexOf(todo.tasks.id(taskId));
+    const task = updateTask;
+
+    if(index === -1) {
+      throw "Task to update not found";
+    }
+
+    if(task.state === taskState.COMPLETE) {
+      task.cycleDate = currentTime.toDate();
+      task.completed.push({updatedOn: currentTime.toDate()});
+    }
+
+    // if we switched occurrence, reset other active set fields
+    if(todo.tasks[index].occurrence !== task.occurrence) {
+      resetOtherOccurrences(task);
+    }
+
+    todo.tasks.set(index, task);
+
+    await todo.save();
+
+    return todo.tasks[todo.tasks.length - 1];
+
+  } catch(err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 async function addTaskForResponsibleParty(responsibleid, task) {
    if(responsibleid) {
       const responsibleTodo = await ToDo.findById(responsibleid).exec();
@@ -262,13 +292,13 @@ async function addTaskForResponsibleParty(responsibleid, task) {
     }
 }
 
-async function removeTaskForResponsibleParty(responsibleid) {
+async function removeTaskForResponsibleParty(taskId, responsibleid) {
    if(responsibleid) {
       const responsibleTodo = await ToDo.findById(responsibleid).exec();
 
-      // const task = responsibleTodo.tasks.id(taskId);
+      const task = responsibleTodo.tasks.id(taskId);
 
-      // task.remove();
+      task.remove();
 
       return await responsibleTodo.save();
     }
