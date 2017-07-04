@@ -8,19 +8,19 @@ describe('Users', function() {
   var communityid = "";
 
   describe('#list', function() {
-    it('Lists all users', function(done) {
+    it('Lists all users in a community', function(done) {
 
       var user = utils.getTestUser();
 
       utils.server
-        .get('/api/users')
+        .get('/api/users/list/' + user.community._id)
         .set('Authorization', 'Bearer ' + user.token)
         .expect(200)
         .end(function(err,res){
           if(err) {
             done(err);
           } else {
-            assert.equal(res.body.length, 3, 'Has three users, one from auth test another at setup');
+            assert.equal(res.body.length, 0, '');
             done();
           }
       });
