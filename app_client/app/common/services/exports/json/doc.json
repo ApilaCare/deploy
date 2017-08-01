@@ -1,0 +1,29 @@
+{
+    //HEADER 
+    "fieldName" : {
+        "display": "Allergy", //required (this will be drawn)
+        "type": "header",  // required, type of field
+        "size": 20,  // optional, size of text || default: 20
+        "color": "blue", // optional, not working for now || default: blue
+        "underline": true, // optional || default: false
+        "numbering": "05" // optional || defualt: '01'
+    },
+
+
+    //CHECKLIST field
+    "checklistName" : {
+        "display": "Checklist", //required (this will be drawn)
+        "type": "checklist", // required, type of field
+        "layout": "full", // required, full | half-1 | half-2
+        "checkitems" : [ //this will be automaticly added if provided data from the issue
+            {
+                "name": "Checkitem 1",
+                "checked": false
+            },
+            {
+                "name": "Checkitem 2",
+                "checked": true
+            }
+        ]
+    }
+}

@@ -1,0 +1,181 @@
+   {
+    "administrative" : {
+        "display": "ADMINISTRATIVE",
+        "type": "header", 
+        "size": 20, 
+        "color": "blue", 
+        "underline": true,
+        "numbering": "01"
+    },
+    "firstName" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "First Name"
+    },
+    "preferredName" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Preferred Name"
+    },
+    "middleName" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Middle Name"
+    },
+    "lastName" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Last Name"
+    },
+    "maidenName" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Maiden Name"
+    },
+    "movedFrom" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Moved From (Town)"
+    },
+    "primaryDoctor" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Primary Doctor"
+    },
+    "pharmacy" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Pharmacy"
+    },
+    "birthDate" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Date of Birth"
+    },
+    "admissionDate" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Admission Date"
+    },
+    "floor" : {
+        "type": "oneLine",
+        "layout": "half-1",
+        "display": "Floor"
+    },
+    "room" : {
+        "type": "oneLine",
+        "layout": "half-2",
+        "display": "Room"
+    },
+    "fullCode" : {
+        "type": "checkbox",
+        "layout": "half-1",
+        "display": "Full Code"
+
+    },
+    "sex" : {
+        "type": "selectBox",
+        "layout": "half-2",
+        "display": "Sex",
+        "options": ["Male", "Female", "Other"]
+    },
+    "assessmentInterval" : {
+        "type": "selectBox",
+        "layout": "full",
+        "display": "Assessment Interval",
+        "options": ["None", "Weekly", "Monthly", "Quarterly", "Yearly"]
+    },
+    "maritalStatus" : {
+        "type": "selectBox",
+        "layout": "full",
+        "display": "Marital Status",
+        "options": ["Single", "Divorced", "Widowed", "Married", "Single Never Married"]
+    },
+    "longTermCareInsurance" : {
+        "type": "checkbox",
+        "layout": "half-1",
+        "display": "Long Term Care Insurance"
+    },
+    "receivingLongTermCareInsurance" : {
+        "type": "checkbox",
+        "layout": "half-2",
+        "display": "Receiving Long Term Care Insurance"
+    },
+    "appointmentCoordination" : {
+        "type": "checkbox",
+        "layout": "half-1",
+        "display": "Appointment Coordination"
+    },
+    "veteran" : {
+        "type": "checkbox",
+        "layout": "half-2",
+        "display": "Veteran"
+    },
+    "extensionCord" : {
+        "type": "checkbox",
+        "layout": "full",
+        "display": "Extension Cord"
+    },
+    "handlesFinances" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Handles Finances"
+    },
+    "notes" : {
+        "type": "multiLine",
+        "layout": "full",
+        "display": "Notes"
+    },
+    "visionAbility" : {
+        "type": "slider",
+        "layout": "full",
+        "display": "Vision Ability",
+        "numCircles": 9
+    },
+    "preferredName2" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Preferred Name"
+    },
+    "preferredName3" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Preferred Name"
+    },
+     "preferredName4" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Preferred Name"
+    },
+      "preferredName5" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Preferred Name"
+    },
+    "preferredName6" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Preferred Name"
+    },
+     "preferredName7" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Preferred Name"
+    },
+    "checklistName" : {
+        "display": "Checklist", 
+        "type": "checklist",
+        "layout": "half-2",
+        "checkitems" : [
+            {
+                "name": "Checkitem 1",
+                "checked": false
+            },
+            {
+                "name": "Checkitem 2",
+                "checked": true
+            }
+        ]
+    }
+
+}

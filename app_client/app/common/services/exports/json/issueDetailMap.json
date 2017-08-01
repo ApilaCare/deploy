@@ -1,0 +1,43 @@
+{
+  "administrative": {
+    "display": "ADMINISTRATIVE",
+    "subCategories": {
+      "name": {
+        "display": "Name",
+        "layout": "half-1",
+        "fields": {
+          "firstName": {
+            "display": "First",
+            "type": "oneLine",
+          },
+          "aliasName": {
+            "display": "Prefered",
+            "type": "oneLine",
+          },
+          "middleName": {
+            "display": "Middle",
+            "type": "oneLine",
+          },
+          "lastName": {
+            "display": "Last",
+            "type": "oneLine",
+          },
+          "maidenName": {
+            "display": "Maiden",
+            "type": "oneLine",
+          }
+        }
+      },
+      "location": {
+        "display": "Location",
+        "layout": "half-2",
+        "fields": {
+          "movedFrom": {
+            "display": "Moved From",
+            "type": "oneLine",
+          }
+        }
+      }
+    }
+  }
+}
