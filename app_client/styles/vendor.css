@@ -3205,6 +3205,7 @@ a.editable-empty:focus {
   stroke-width: 0; }
 
 .c3-bar._expanded_ {
+  fill-opacity: 1;
   fill-opacity: 0.75; }
 
 /*-- Focus --*/
@@ -3310,6 +3311,12 @@ a.editable-empty:focus {
 .c3-chart-arc .c3-gauge-value {
   fill: #000;
   /*  font-size: 28px !important;*/ }
+
+.c3-chart-arc.c3-target g path {
+  opacity: 1; }
+
+.c3-chart-arc.c3-target.c3-focused g path {
+  opacity: 1; }
 
 /*
 

@@ -2,40 +2,69 @@
     "administrative" : {
         "display": "ADMINISTRATIVE",
         "type": "header", 
-        "size": 20, 
-        "color": "blue", 
         "underline": true,
         "numbering": "01"
     },
+    "Name" : {
+        "type": "title",
+        "layout": "half-1",
+        "display": "Name"
+    },
+    "Location" : {
+        "type": "title",
+        "layout": "half-2",
+        "display": "Location"
+    },
     "firstName" : {
         "type": "oneLine",
-        "layout": "full",
-        "display": "First Name"
-    },
-    "preferredName" : {
-        "type": "oneLine",
-        "layout": "full",
-        "display": "Preferred Name"
-    },
-    "middleName" : {
-        "type": "oneLine",
-        "layout": "full",
-        "display": "Middle Name"
-    },
-    "lastName" : {
-        "type": "oneLine",
-        "layout": "full",
-        "display": "Last Name"
-    },
-    "maidenName" : {
-        "type": "oneLine",
-        "layout": "full",
-        "display": "Maiden Name"
+        "layout": "half-1",
+        "display": "First"
     },
     "movedFrom" : {
         "type": "oneLine",
         "layout": "full",
         "display": "Moved From (Town)"
+    },
+    "preferredName" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Preferred"
+    },
+    "buildingStatus" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Building Status"
+    },
+    "middleName" : {
+        "type": "oneLine",
+        "layout": "half-1",
+        "display": "Middle"
+    },
+    "room" : {
+        "type": "oneLine",
+        "layout": "half-2",
+        "display": "Room"
+    },
+    "lastName" : {
+        "type": "oneLine",
+        "layout": "half-1",
+        "display": "Last"
+    },
+    "movedOutTo" : {
+        "type": "oneLine",
+        "layout": "half-2",
+        "display": "Moved To"
+    },
+    "maidenName" : {
+        "type": "oneLine",
+        "layout": "half-1",
+        "display": "Maiden"
+    },
+    "movedOutDescribe" : {
+        "type": "oneLine",
+        "layout": "half-2",
+        "paddingY": 20,
+        "display": "Moved Out Describe"
     },
     "primaryDoctor" : {
         "type": "oneLine",
@@ -59,19 +88,13 @@
     },
     "floor" : {
         "type": "oneLine",
-        "layout": "half-1",
+        "layout": "full",
         "display": "Floor"
-    },
-    "room" : {
-        "type": "oneLine",
-        "layout": "half-2",
-        "display": "Room"
     },
     "fullCode" : {
         "type": "checkbox",
         "layout": "half-1",
         "display": "Full Code"
-
     },
     "sex" : {
         "type": "selectBox",
@@ -126,56 +149,83 @@
         "layout": "full",
         "display": "Notes"
     },
-    "visionAbility" : {
-        "type": "slider",
-        "layout": "full",
-        "display": "Vision Ability",
-        "numCircles": 9
+    "break1" : {
+        "type": "break"
     },
-    "preferredName2" : {
+
+
+
+
+
+    "life" : {
+        "display": "LIFE",
+        "type": "header", 
+        "underline": true,
+        "numbering": "02"
+    },
+    "religion" : {
+        "display" : "Religion",
+        "type": "multiLine",
+        "paddingY": 5,
+        "layout" : "full"
+    },
+    "education" : {
+        "display" : "Education",
+        "type": "multiLine",
+        "paddingY": 5,
+        "layout" : "full"
+    },
+    "occupation" : {
+        "display" : "Occupation",
+        "type": "multiLine",
+        "paddingY": 5,
+        "layout" : "full"
+    },
+    "outsideAgency" : {
+        "display" : "Outside Agency",
         "type": "oneLine",
-        "layout": "full",
-        "display": "Preferred Name"
+        "paddingY": 10,
+        "layout" : "full"
     },
-    "preferredName3" : {
-        "type": "oneLine",
+    "speech" : {
+        "type": "title",
         "layout": "full",
-        "display": "Preferred Name"
+        "display": "Speech"
     },
-     "preferredName4" : {
-        "type": "oneLine",
-        "layout": "full",
-        "display": "Preferred Name"
+    "easilyUnderstood" : {
+        "type": "checkbox",
+        "layout": "half-1",
+        "display": "Easily Understood"
     },
-      "preferredName5" : {
-        "type": "oneLine",
-        "layout": "full",
-        "display": "Preferred Name"
-    },
-    "preferredName6" : {
-        "type": "oneLine",
-        "layout": "full",
-        "display": "Preferred Name"
-    },
-     "preferredName7" : {
-        "type": "oneLine",
-        "layout": "full",
-        "display": "Preferred Name"
-    },
-    "checklistName" : {
-        "display": "Checklist", 
-        "type": "checklist",
+    "englishPrimaryLanguage" : {
+        "type": "checkbox",
         "layout": "half-2",
-        "checkitems" : [
-            {
-                "name": "Checkitem 1",
-                "checked": false
-            },
-            {
-                "name": "Checkitem 2",
-                "checked": true
-            }
-        ]
+        "display": "English as Primary Language"
+    },
+    "otherLanguages" : {
+        "display" : "Other Languages",
+        "type": "oneLine",
+        "layout" : "full"
+    },
+    "items" : {
+        "type": "title",
+        "layout": "full",
+        "display": "Items"
+    },
+    "heatingPad" : {
+        "type": "checkbox",
+        "layout": "half-1",
+        "display": "Heating Pad"
+    },
+    "microwave" : {
+        "type": "checkbox",
+        "layout": "half-2",
+        "display": "Microwave"
+    },
+    "notes2" : {
+        "type": "multiLine",
+        "layout": "full",
+        "display": "Notes"
     }
 
 }

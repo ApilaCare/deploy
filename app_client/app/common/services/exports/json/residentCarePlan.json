@@ -1,0 +1,231 @@
+   {
+    "administrative" : {
+        "display": "ADMINISTRATIVE",
+        "type": "header", 
+        "underline": true,
+        "numbering": "01"
+    },
+    "Name" : {
+        "type": "title",
+        "layout": "half-1",
+        "display": "Name"
+    },
+    "Location" : {
+        "type": "title",
+        "layout": "half-2",
+        "display": "Location"
+    },
+    "firstName" : {
+        "type": "oneLine",
+        "layout": "half-1",
+        "display": "First"
+    },
+    "movedFrom" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Moved From (Town)"
+    },
+    "preferredName" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Preferred"
+    },
+    "buildingStatus" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Building Status"
+    },
+    "middleName" : {
+        "type": "oneLine",
+        "layout": "half-1",
+        "display": "Middle"
+    },
+    "room" : {
+        "type": "oneLine",
+        "layout": "half-2",
+        "display": "Room"
+    },
+    "lastName" : {
+        "type": "oneLine",
+        "layout": "half-1",
+        "display": "Last"
+    },
+    "movedOutTo" : {
+        "type": "oneLine",
+        "layout": "half-2",
+        "display": "Moved To"
+    },
+    "maidenName" : {
+        "type": "oneLine",
+        "layout": "half-1",
+        "display": "Maiden"
+    },
+    "movedOutDescribe" : {
+        "type": "oneLine",
+        "layout": "half-2",
+        "paddingY": 20,
+        "display": "Moved Out Describe"
+    },
+    "primaryDoctor" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Primary Doctor"
+    },
+    "pharmacy" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Pharmacy"
+    },
+    "birthDate" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Date of Birth"
+    },
+    "admissionDate" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Admission Date"
+    },
+    "floor" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Floor"
+    },
+    "fullCode" : {
+        "type": "checkbox",
+        "layout": "half-1",
+        "display": "Full Code"
+    },
+    "sex" : {
+        "type": "selectBox",
+        "layout": "half-2",
+        "display": "Sex",
+        "options": ["Male", "Female", "Other"]
+    },
+    "assessmentInterval" : {
+        "type": "selectBox",
+        "layout": "full",
+        "display": "Assessment Interval",
+        "options": ["None", "Weekly", "Monthly", "Quarterly", "Yearly"]
+    },
+    "maritalStatus" : {
+        "type": "selectBox",
+        "layout": "full",
+        "display": "Marital Status",
+        "options": ["Single", "Divorced", "Widowed", "Married", "Single Never Married"]
+    },
+    "longTermCareInsurance" : {
+        "type": "checkbox",
+        "layout": "half-1",
+        "display": "Long Term Care Insurance"
+    },
+    "receivingLongTermCareInsurance" : {
+        "type": "checkbox",
+        "layout": "half-2",
+        "display": "Receiving Long Term Care Insurance"
+    },
+    "appointmentCoordination" : {
+        "type": "checkbox",
+        "layout": "half-1",
+        "display": "Appointment Coordination"
+    },
+    "veteran" : {
+        "type": "checkbox",
+        "layout": "half-2",
+        "display": "Veteran"
+    },
+    "extensionCord" : {
+        "type": "checkbox",
+        "layout": "full",
+        "display": "Extension Cord"
+    },
+    "handlesFinances" : {
+        "type": "oneLine",
+        "layout": "full",
+        "display": "Handles Finances"
+    },
+    "notes" : {
+        "type": "multiLine",
+        "layout": "full",
+        "display": "Notes"
+    },
+    "break1" : {
+        "type": "break"
+    },
+
+
+
+
+
+    "life" : {
+        "display": "LIFE",
+        "type": "header", 
+        "underline": true,
+        "numbering": "02"
+    },
+    "religion" : {
+        "display" : "Religion",
+        "type": "multiLine",
+        "paddingY": 5,
+        "layout" : "full"
+    },
+    "education" : {
+        "display" : "Education",
+        "type": "multiLine",
+        "paddingY": 5,
+        "layout" : "full"
+    },
+    "occupation" : {
+        "display" : "Occupation",
+        "type": "multiLine",
+        "paddingY": 5,
+        "layout" : "full"
+    },
+    "outsideAgency" : {
+        "display" : "Outside Agency",
+        "type": "oneLine",
+        "paddingY": 10,
+        "layout" : "full"
+    },
+    "speech" : {
+        "type": "title",
+        "layout": "full",
+        "display": "Speech"
+    },
+    "easilyUnderstood" : {
+        "type": "checkbox",
+        "layout": "half-1",
+        "display": "Easily Understood"
+    },
+    "englishPrimaryLanguage" : {
+        "type": "checkbox",
+        "layout": "half-2",
+        "display": "English as Primary Language"
+    },
+    "otherLanguages" : {
+        "display" : "Other Languages",
+        "type": "oneLine",
+        "layout" : "full"
+    },
+    "items" : {
+        "type": "title",
+        "layout": "full",
+        "display": "Items"
+    },
+    "heatingPad" : {
+        "type": "checkbox",
+        "layout": "half-1",
+        "display": "Heating Pad"
+    },
+    "microwave" : {
+        "type": "checkbox",
+        "layout": "half-2",
+        "display": "Microwave"
+    },
+    "notes2" : {
+        "type": "multiLine",
+        "layout": "full",
+        "display": "Notes"
+    }
+
+}

@@ -1,43 +1,78 @@
-{
-  "administrative": {
-    "display": "ADMINISTRATIVE",
-    "subCategories": {
-      "name": {
-        "display": "Name",
+   {
+    "name" : {
+        "display": "ISSUE",
+        "type": "header", 
+        "underline": true,
+        "numbering": "01"
+    },
+    "status" : {
+        "display": "Status: ",
         "layout": "half-1",
-        "fields": {
-          "firstName": {
-            "display": "First",
-            "type": "oneLine",
-          },
-          "aliasName": {
-            "display": "Prefered",
-            "type": "oneLine",
-          },
-          "middleName": {
-            "display": "Middle",
-            "type": "oneLine",
-          },
-          "lastName": {
-            "display": "Last",
-            "type": "oneLine",
-          },
-          "maidenName": {
-            "display": "Maiden",
-            "type": "oneLine",
-          }
-        }
-      },
-      "location": {
-        "display": "Location",
+        "type": "oneLine",
+        "underline": false
+    },
+    "resolutionTimeframe" : {
+        "display" : "Time Frame: ",
         "layout": "half-2",
-        "fields": {
-          "movedFrom": {
-            "display": "Moved From",
-            "type": "oneLine",
-          }
-        }
-      }
+        "type": "oneLine",
+        "underline": false
+    },
+    "confidential" : {
+        "display" : "Confidential: ",
+        "layout": "half-1",
+        "type": "checkbox"    
+    },
+    "responsibleParty" : {
+        "display" : "Responsible Party: ",
+        "layout": "half-2",
+        "type": "oneLine",
+        "underline": false    
+    },
+    "labels" : {
+        "type": "multifield",
+        "layout": "half-1",
+        "display": "Labels: ",
+        "prop": "name"
+    },
+    "idMembers" : {
+        "type": "multifield",
+        "layout": "half-2",
+        "display": "Members: ",
+        "prop": "name"
+    },
+    "attachments" : {
+        "type": "multifield",
+        "layout": "half-2",
+        "display": "Attachments: ",
+        "prop": "name"
+    },
+    "descriptionTitle" : {
+        "display": "DESCRIPTION",
+        "type": "title",
+        "layout": "full"
+    },
+    "description" : {
+        "display" : "description",
+        "type": "multiLine",
+        "layout": "full",
+        "underline": false
+    },
+    "commentsTitle" : {
+        "display": "COMMENTS",
+        "type": "title",
+        "layout": "full"
+    },
+    "comments" : {
+        "type": "comments",
+        "layout": "full"
+    },
+    "plansTitle" : {
+        "display": "PLANS",
+        "type": "title",
+        "layout": "full"
+    },
+    "finalPlan" : {
+        "type": "plans",
+        "layout": "full"
     }
-  }
-}
+   }
