@@ -172,9 +172,13 @@ module.exports.updateTask = async (req, res) => {
       }
 
       await updateTask(req.body, currtodoid, taskId);
+
+      utils.sendJSONresponse(res, 200, updatedTask);
+    } else {
+      utils.sendJSONresponse(res, 200, updatedTask);
     }
 
-    utils.sendJSONresponse(res, 200, updatedTask);
+    
 
   } catch(err) {
     console.log(err);
@@ -253,8 +257,6 @@ async function updateTask(updateTask, todoId, taskId) {
     const currentTime = await TaskService.loadMockTime();
 
     const todo = await ToDo.findById(todoId).exec();
-
-    //console.log(todoId, todo);
 
     const index = todo.tasks.indexOf(todo.tasks.id(taskId));
     const task = updateTask;
