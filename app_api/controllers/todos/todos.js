@@ -144,19 +144,23 @@ module.exports.updateTask = async (req, res) => {
     return;
   }
 
+  console.log("fdf:   " + todoId);
+
   try {
 
     const updatedTask = await updateTask(req.body, todoId, taskId);
 
     const userId = req.payload._id;
 
+    console.log(taskId);
+
     //responsible party has been changed
     if(req.body.oldResponsibleTodoid) {
       //remove the task from oldResponsibleParty
-      await removeTaskForResponsibleParty(task._id, req.body.oldResponsibleTodoid);
+      await removeTaskForResponsibleParty(taskId, req.body.oldResponsibleTodoid);
 
       //add the task to newResponsibleParty
-      await addTaskForResponsibleParty(req.body.responsibleTodoid, task);
+      await addTaskForResponsibleParty(req.body.responsibleTodoid, taskId);
     }
 
     const responsible = req.body.responsibleParty._id ? req.body.responsibleParty._id : req.body.responsibleParty;

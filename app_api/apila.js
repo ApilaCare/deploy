@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var cors = require('cors');
 var helmet = require('helmet');
+var path = require('path');
 
 require('./services/activities')(io);
 
@@ -65,6 +66,7 @@ app.disable('etag');
 
 app.set('port', process.env.PORT || 3300);
 
+app.use('/marketing', express.static(path.join(__dirname, '/marketing')));
 
 var server = http.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
