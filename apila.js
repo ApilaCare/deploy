@@ -59,7 +59,7 @@ app.use('/files', express.static(__dirname + 'upload_storage'));
 app.use(express.static(path.join(__dirname, 'app_client')));
 
 
-app.use('/', express.static(path.join(__dirname, '/marketing')));
+app.use('/marketing', express.static(path.join(__dirname, '/marketing')));
 app.use('/front', express.static(path.join(__dirname, '/front')));
 
 app.get('*', function(req, res) {
@@ -73,7 +73,7 @@ app.get('*', function(req, res) {
   } else if(req.url === '/static/css/main.f626de8a.css.map') {
     res.sendfile((path.join(__dirname, 'front/static/css/main.f626de8a.css.map')));
   } else {
-    res.sendfile((path.join(__dirname, 'app_client/index.html')));
+    res.sendfile((path.join(__dirname, 'marketing/index.html')));
   }
 });
 

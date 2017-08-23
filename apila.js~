@@ -59,7 +59,7 @@ app.use('/files', express.static(__dirname + 'upload_storage'));
 app.use(express.static(path.join(__dirname, 'app_client')));
 
 
-app.use('/marketing', express.static(path.join(__dirname, '/marketing')));
+app.use('/', express.static(path.join(__dirname, '/marketing')));
 app.use('/front', express.static(path.join(__dirname, '/front')));
 
 app.get('*', function(req, res) {
