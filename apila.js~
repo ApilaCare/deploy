@@ -61,6 +61,10 @@ app.use(express.static(path.join(__dirname, 'app_client')));
 
 app.use('/marketing', express.static(path.join(__dirname, '/marketing')));
 
+app.use('/front', express.static(path.join(__dirname, '/front')));
+
+app.use('/dashboard', express.static(path.join(__dirname, 'app_client')));
+ 
 
 app.set('port', process.env.PORT || 3300);
 
