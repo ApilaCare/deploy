@@ -69,7 +69,7 @@ app.use('/front', express.static(path.join(__dirname, '/front')));
 app.use('*', express.static(path.join(__dirname, 'app_client')));
  
 
-app.set('port', process.env.PORT || 3300);
+app.set('port', process.env.PORT || 3000);
 
 var server = http.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
