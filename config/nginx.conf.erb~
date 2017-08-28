@@ -35,7 +35,7 @@ http {
 		server_name _;
 		keepalive_timeout 5;
 
-    root   /app/public;
+    root   /app/app_client;
     #index  index.html index.htm;
 
 		location = / {
