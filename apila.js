@@ -14,6 +14,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var cors = require('cors');
+var fs = require('fs');
 var path = require('path');
 
 require('./app_api/services/activities.service')(io);
@@ -52,6 +53,8 @@ if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') 
   });
 }
 */
+
+fs.openSync('/tmp/app-initialized', 'w');
 
 app.use('/api', routesApi);
 app.use('/files', express.static(__dirname + 'upload_storage'));
